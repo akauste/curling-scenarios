@@ -11,3 +11,29 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.field {
+  display: table-row;
+  padding: 0.3em;
+}
+.field label {
+  display: table-cell;
+  width: 50%;
+  text-align:right;
+  padding: 0.3em;
+}
+.field input,
+.field select {
+  display: table-cell;
+  width: 100%;
+  text-align: left;
+}
+
+.sheet-image {
+  resize: vertical;
+  width: auto;
+  max-height: 80vh;
+  float:left;
+  margin-right: 2em;
+  overflow: hidden;
+}
