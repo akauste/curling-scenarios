@@ -12,7 +12,8 @@ const MainHeader = () => {
           <ul>
             <li><NavLink className={isActive} to="/">Home</NavLink></li>
             <li><NavLink className={isActive} to="/board">Tactic board</NavLink></li>
-            { !user && <li><NavLink className={isActive} to="/login">Login</NavLink></li>}
+            { user ? <li><NavLink className={isActive} to="/profile">Profile</NavLink></li>
+                   : <li><NavLink className={isActive} to="/login">Login</NavLink></li>}
             { user && <li><NavLink className={isActive} to="/logout">Logout</NavLink></li> }
           </ul>
         </nav>

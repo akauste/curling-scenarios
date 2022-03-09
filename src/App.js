@@ -6,9 +6,12 @@ import MainHeader from './components/layout/MainHeader';
 import Home from './pages/Home';
 import Board from './pages/Board';
 import Login from './pages/Login';
+import Profile from './pages/Profile';
+import { useSelector } from 'react-redux';
 
 function App() {
-  console.log(process.env);
+  const user = useSelector(state => state.auth.user);
+
   return (
     <>
       <MainHeader />
@@ -17,6 +20,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/board" element={<Board />} />
           <Route path="/login" element={<Login />} />
+          { user && <Route path="/profile" element={<Profile />} /> }
           <Route path="*" element={<p>404 Page not found</p>} />
         </Routes>
       </main>
