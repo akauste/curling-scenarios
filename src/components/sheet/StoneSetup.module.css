@@ -1,0 +1,37 @@
+button {
+  color: white;
+  border: 0px solid gray;
+  border-radius: 0.6em;
+  padding: 0.5em 1em;
+  margin: 0.2em;
+}
+
+.btn-group {
+  margin: 0.2em;
+}
+.btn-group button {
+  margin: 0;
+}
+.btn-group button {
+  border-radius: 0;
+}
+.btn-group button:first-of-type {
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+.btn-group button:not(:last-of-type) {
+  border-right: 1px solid silver;
+}
+.btn-group button:last-of-type {
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.activeBtn {
+  color: white;
+  background-color: #3377ff;
+}
+.inactiveBtn {
+  color: #555555;
+  background-color: #cccccc;
+}

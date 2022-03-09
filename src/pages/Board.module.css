@@ -1,0 +1,50 @@
+
+.sheet {
+    resize: vertical;
+    width: auto;
+    height: 80vh;
+    float:left;
+    margin-right: 2em;
+    overflow: hidden;
+    background-color: white;
+}
+.config {
+    margin: 2em;
+}
+.activeBtn {
+    color: white;
+    background-color: #3377ff;
+}
+.inactiveBtn {
+    color: #555555;
+    background-color: #cccccc;
+}
+
+.tabs {
+    border-bottom: 1px solid silver;
+    padding-bottom: 0;
+}
+.tabs li {
+    display: inline-block;
+    margin-bottom: 0;
+}
+.tabs li button {
+    border: 1px solid silver;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: 1px solid silver;
+    background-color: #dddddd;
+    color: black;
+    margin-bottom: -1px;
+}
+.tabs li button.active {
+    border-bottom: 1px solid transparent;
+    color: #3377ff;
+    background-color: white;
+}
+.tabs li:hover button {
+    border-bottom: 1px solid transparent;
+    color: #3377ff;
+}

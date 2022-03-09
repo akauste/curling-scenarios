@@ -8,6 +8,7 @@ import Board from './pages/Board';
 import Login from './pages/Login';
 
 function App() {
+  console.log(process.env);
   return (
     <>
       <MainHeader />
