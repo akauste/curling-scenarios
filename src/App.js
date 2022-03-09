@@ -6,6 +6,7 @@ import MainHeader from './components/layout/MainHeader';
 import Home from './pages/Home';
 import Board from './pages/Board';
 import Login from './pages/Login';
+import Logout from './pages/Logout';
 import Profile from './pages/Profile';
 import { useSelector } from 'react-redux';
 

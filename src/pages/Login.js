@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import app from '../lib/firebase';
+import { authActions } from '../store/auth-slice';
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(state => state.auth.user);
   if(user) {
@@ -28,7 +30,7 @@ const Login = () => {
         const user = result.user;
         localStorage.setItem('user', JSON.stringify(user));
         console.log('User: ', user);
-        // ...
+        dispatch(authActions.login({ user, token }));
         navigate('/profile');
 
       })

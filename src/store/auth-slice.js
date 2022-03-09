@@ -13,10 +13,16 @@ export const authSlice = createSlice({
   initialState: initialState,
   reducers: {
     login(state, action) {
-      // ...
+      state.user = action.payload.user;
+      state.token = action.payload.token;
     },
-    logout() {
-      // ...
+    logout(state) {
+      state.user = null;
+      state.token = null;
+      localStorage.removeItem('user');
+      localStorage.removeItem('auth-token');
     }
   }
 });
+
+export const authActions = authSlice.actions;
