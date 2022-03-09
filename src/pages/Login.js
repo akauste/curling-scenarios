@@ -1,9 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useSelector } from "react-redux";
 
 import app from '../lib/firebase';
 
 const Login = () => {
+  const navigate = useNavigate();
   const user = useSelector(state => state.auth.user);
   if(user) {
     return (<div>
@@ -27,6 +29,8 @@ const Login = () => {
         localStorage.setItem('user', JSON.stringify(user));
         console.log('User: ', user);
         // ...
+        navigate('/profile');
+
       })
       .catch((error) => {
         // Handle Errors here.
