@@ -24,6 +24,8 @@ const Board = () => {
     const sheetContainerRef = useRef();
     const [stones, updateStones] = useState(DUMMY_STONES);
     const [tab, setTab] = useState('init');
+    const titleRef = useRef();
+    const commentRef = useRef();
 
     const moveStoneHandler = (id, x, y) => {
         console.log('Moving: '+ id + ' to : ', x ,y);
@@ -38,6 +40,26 @@ const Board = () => {
         event.preventDefault();
         setTab(tab);
     }
+
+    const localSaveHandler = () => {
+        const maxId = localStorage.getItem('maxScenarioId') || 1;
+        localStorage.setItem('scenario-'+ maxId, JSON.stringify({
+            scenarioId: maxId,
+            stones,
+            title: titleRef.current.value,
+            comment: commentRef.current.value,
+        }));
+        localStorage.setItem('maxScenarioId', maxId+1);
+    };
+
+    const loadScenario = id => {
+        const scenario = JSON.parse(localStorage.getItem('scenario-'+ id));
+        updateStones(scenario.stones);
+    };
+
+    const myScenarios = //(() => {
+        Object.keys(localStorage).filter((k,v) => k.toString().match(/^scenario-\d+/)).map(k => JSON.parse(localStorage.getItem(k)));
+    //})();
 
     return (<>
         <div className={classes.sheet}>
@@ -56,18 +78,28 @@ const Board = () => {
             <form>
                 <div className="field">
                     <label>Title</label>
-                    <input type="text" placeholder="Give a title for the situation" />
+                    <input type="text" placeholder="Give a title for the situation" ref={titleRef} required />
                 </div>
                 <div className="field">
                     <label>Comments</label>
-                    <textarea rows={5} />
+                    <textarea rows={5} ref={commentRef} />
                 </div>
                 <div className="field">
                     <label>Add photo</label>
                     <input type="file" />
                 </div>
+                <button type="button" onClick={localSaveHandler}>Save locally</button>
             </form>
             )}
+            <h2>Locally saved scenarios</h2>
+            <ul>
+                { myScenarios.map(scene => (
+                    <li key={ scene.scenarioId }>
+                        [{scene.scenarioId}] { scene.title }
+                        <button onClick={() => {loadScenario(scene.scenarioId)}}>Load</button>
+                    </li>
+                ))}
+            </ul>
         </div>
     </>);
 }
