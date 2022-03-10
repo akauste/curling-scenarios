@@ -1,7 +1,6 @@
-import { useCallback, useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import Sheet from "../components/sheet/Sheet";
 import classes from './Board.module.css';
-import { useSelector } from 'react-redux';
 import ConfigureSheet from "../components/sheet/ConfigureSheet";
 import StoneSetup from "../components/sheet/StoneSetup";
 
