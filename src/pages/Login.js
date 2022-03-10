@@ -9,13 +9,9 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(state => state.auth.user);
-  if(user) {
-    return (<div>
-        <h2>Hello { user.displayName }</h2>
-        { user.email }
-        <button>Logout</button>
-    </div>);
-  }
+  /*if(user) {
+    return (<div>You are already logged in!</div>);
+  }*/
   const loginWithGoogle = () => {
     const provider = new GoogleAuthProvider();
     const auth = getAuth(app);
@@ -24,15 +20,16 @@ const Login = () => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
-        console.log(token);
-        localStorage.setItem('auth-token', JSON.stringify(token));
+
         // The signed-in user info.
         const user = result.user;
-        localStorage.setItem('user', JSON.stringify(user));
-        console.log('User: ', user);
-        dispatch(authActions.login({ user, token }));
-        navigate('/profile');
+        const u = { displayName: user.displayName, email: user.email };
 
+        auth.currentUser.getIdToken(/* forceRefresh */ true)
+          .then((idToken) => {
+            dispatch(authActions.login({ user: u, token, idToken }));
+          });
+        navigate('/profile');
       })
       .catch((error) => {
         // Handle Errors here.
@@ -48,11 +45,8 @@ const Login = () => {
 
   return (
     <>
-      <h1>Login / signup form</h1>
-      <p>
-        Not yet here, will be implemented, when there's sections that will need
-        that
-      </p>
+      <h1>Login</h1>
+      <p>Currently you can only login with google account</p>
       <button onClick={loginWithGoogle}>Login with google</button>
     </>
   );
