@@ -9,9 +9,9 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(state => state.auth.user);
-  /*if(user) {
+  if(user) {
     return (<div>You are already logged in!</div>);
-  }*/
+  }
   const loginWithGoogle = () => {
     const provider = new GoogleAuthProvider();
     const auth = getAuth(app);
@@ -40,6 +40,7 @@ const Login = () => {
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
+        console.log(errorCode, errorMessage, email, credential);
       });
   };
 
