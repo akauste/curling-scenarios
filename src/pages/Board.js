@@ -6,27 +6,10 @@ import StoneSetup from "../components/sheet/StoneSetup";
 import { useDispatch, useSelector } from "react-redux";
 import { stonesActions } from "../store/stones-slice";
 
-const DUMMY_STONES = {};
-let posX = 1;
-let posY = 1;
-for(let i=1; i < 9; i++) {
-    const sideDist = posX*30;
-    const y = -15+30*posY;
-
-    DUMMY_STONES['r'+i] = { x: 30+sideDist, y: y, id:'r'+i, type: 'stone', visible: true, num: i, team: 1 };
-    DUMMY_STONES['y'+i] = { x: 445-sideDist, y: y, id:'y'+i, type: 'stone', visible: true, num: i, team: 2 };
-    posX++;
-    if(posX > 4) {
-        posX = 1;
-        posY++;
-    }
-};
-
 const Board = () => {
     const sheetContainerRef = useRef();
     const stones = useSelector(state => state.stones.stones);
     const dispatch = useDispatch();
-    //const [stones, updateStones] = useState(DUMMY_STONES);
     const [tab, setTab] = useState('init');
     const titleRef = useRef();
     const commentRef = useRef();
@@ -34,7 +17,7 @@ const Board = () => {
     const moveStoneHandler = (id, x, y) => {
         console.log('Moving: '+ id + ' to : ', x ,y);
         dispatch(stonesActions.moveStone({id, x, y}));
-    };    
+    };
 
     const switchTab = (event, tab) => {
         event.preventDefault();
