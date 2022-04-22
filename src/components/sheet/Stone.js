@@ -1,5 +1,6 @@
 import { useDrag } from "react-dnd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { stonesActions } from "../../store/stones-slice";
 
 import ShadowStone from "./ShadowStone";
 
@@ -10,14 +11,15 @@ const Stone = props => {
     const stones = useSelector(state => state.stones.stones);
     const sheetWidth = useSelector(state => state.sheet.width);
     const otherStones = Object.values(stones).filter(s => s.id !== id);
+    const dispatch = useDispatch();
 
     // Stone must receive the coordinate calculation function based on the sheet config somehow
     // Stone itself should have position, that is no relative to that, maybe having origo at tee?
-
+    
     const createShadow = event => {
       event.preventDefault();
-      props.stone.prevPosition = { ...props.stone };
-    };
+      dispatch(stonesActions.addStonePrevPosition({id}));
+    }
 
     const diameter = 28.8;
     const isOverlap = (x1, y1, x2, y2) => {

@@ -24,6 +24,10 @@ export const stonesSlice = createSlice({
       const {id, x, y} = action.payload;
       state.stones = Object.values(state.stones).map(val => val.id === id ? { ...val, x, y} : { ...val });
     },
+    addStonePrevPosition: (state, action) => {
+      const {id} = action.payload;
+      state.stones = Object.values(state.stones).map(val => val.id === id ? { ...val, prevPosition: { ...val }} : { ...val });
+    },
     reset: (state) => {
       state.stones = initialState;
     },
