@@ -1,12 +1,16 @@
 import { useRef, useState, useCallback } from "react";
 import { useDrop } from "react-dnd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { stonesActions } from "../../store/stones-slice";
 
 import Stone from "./Stone";
 
 const Sheet = (props) => {
-    const { stones, onMoveStone } = props;
+    //const { stones, onMoveStone } = props;
+    const { onMoveStone } = props;
+    const stones = useSelector(state => state.stones.stones);
     const sheet = useSelector(state => state.sheet);
+    const dispatch = useDispatch();
     
     const svgRef = useRef();
 
@@ -28,7 +32,7 @@ const Sheet = (props) => {
             const y = Math.round(
               item.stone.y + delta.y * (sheet.width / svgRef.current.offsetWidth)
             );
-            moveStone(item.stone.id, x, y);
+            dispatch(stonesActions.moveStone({id: item.stone.id, x, y}));
             return undefined;
           }
         }),
@@ -74,13 +78,22 @@ const Sheet = (props) => {
 
     { doublesMarking.map(i => i) }
 
+    {/* <g>
+      <path d={`M ${sheet.width/2-122} ${sheet.backgap+183} Q ${sheet.width/2} ${sheet.backgap+183*1.5} ${sheet.width/2} ${sheet.backgap+183+640+2000}`} stroke="green" fill="transparent"/>
+      <line x1="10" y1="80"  x2="75" y2="10" stroke="red" />
+      <line x1="180" y1="80" x2="75" y2="10" stroke="red" />
+      <path d={`M ${sheet.width/2} ${sheet.backgap+183} Q ${sheet.width/2-122} ${sheet.backgap+183*1.5} ${sheet.width/2} ${sheet.backgap+183+640+2000}`} stroke="black" fill="transparent"/>
+      <path d={`M ${sheet.width/2} ${sheet.backgap+183} Q ${sheet.width/2+183} ${sheet.backgap+183*1.5} ${sheet.width/2} ${sheet.backgap+183+640+2000}`} stroke="silver" fill="transparent"/>
+      <path d={`M ${sheet.width/2-14.4} ${sheet.backgap+183} Q ${sheet.width/2+183-14.4} ${sheet.backgap+183*1.5} ${sheet.width/2-14.4} ${sheet.backgap+183+640+2000}`} stroke="silver" fill="transparent"/>
+    </g> */}
+
     {/* <!-- // Test displaying shades, that represent what is behind guards //-->
      <!-- // Move away, when works // -->
     <g ng-repeat="stone in $ctrl.stones | limitDisplay:$ctrl.visualize.display_stone">
         <g stoneshade ng-init="stone=stone"></g>
     </g> */}
-    { Object.keys(stones).map((stone) => {
-        return <Stone key={ stone } stone={stones[stone]} containerRef={svgRef} />;
+    { Object.values(stones).map((stone) => {
+        return <Stone key={ stone.id } stone={stone} containerRef={svgRef} />;
     }) }
     { props.children }
 

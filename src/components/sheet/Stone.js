@@ -4,9 +4,12 @@ import { useSelector } from "react-redux";
 import ShadowStone from "./ShadowStone";
 
 const Stone = props => {
-    const {x, y} = props.stone;
+    const {x, y, id} = props.stone;
     const colors = [ useSelector(state => state.sheet.team1color), useSelector(state => state.sheet.team2color) ];
     const color = colors[props.stone.team - 1];
+    const stones = useSelector(state => state.stones.stones);
+    const sheetWidth = useSelector(state => state.sheet.width);
+    const otherStones = Object.values(stones).filter(s => s.id !== id);
 
     // Stone must receive the coordinate calculation function based on the sheet config somehow
     // Stone itself should have position, that is no relative to that, maybe having origo at tee?
@@ -14,6 +17,27 @@ const Stone = props => {
     const createShadow = event => {
       event.preventDefault();
       props.stone.prevPosition = { ...props.stone };
+    };
+
+    const diameter = 28.8;
+    const isOverlap = (x1, y1, x2, y2) => {
+      const dX = Math.abs(x1 - x2);
+      const dY = Math.abs(y1-y2);
+      if(dX > diameter || dY > diameter || Math.sqrt(dX*dX+dY*dY) > diameter)
+        return false;
+      return true;
+    };
+    const clearOverlaps = (x,y, other) => {
+      const diffX = Math.abs(x-other.x);
+      const diffY = Math.abs(y-other.y);
+      if(diffX > diffY) {
+        const x1 = (x < other.x) ? other.x - Math.sqrt(diameter**2 - diffY**2)
+                                 : other.x + Math.sqrt(diameter**2 - diffY**2);
+        return [x1, y];
+      }
+      const y1 = (y < other.y) ? other.y - Math.sqrt(diameter**2 - diffX**2)
+                               : other.y + Math.sqrt(diameter**2 - diffX**2);
+      return [x, y1];
     };
 
     const [{ isDragging, diff }, drag] = useDrag(
@@ -29,15 +53,34 @@ const Stone = props => {
       );
 
       if (isDragging) { //  && hideSourceOnDrag
-        const scale = 475 / props.containerRef.current.offsetWidth;
+        const scale = sheetWidth / props.containerRef.current.offsetWidth;
         const dragStartX = props.stone.prevPosition ? props.stone.prevPosition.x : x;
         const dragStartY = props.stone.prevPosition ? props.stone.prevPosition.y : y;
+        if(!diff) return <div />;
+        let newX = x + diff.x * scale;
+        let newY = y + diff.y * scale;
+        const overlaps = otherStones.filter(ot => isOverlap(ot.x, ot.y, newX, newY));
+        if(overlaps.length) {
+          console.log('Found overlaps: ', overlaps);
+          for (const other of overlaps) {
+            [newX, newY] = clearOverlaps(newX, newY, other);
+          }
+          if(!newX) {
+            console.log('fucked here!');
+            newX=0;
+          }
+          if(!newY) {
+            console.log('fucked here Y!');
+            newY=0;
+          }
+        }
+
         return (
           <g>
             {diff && (
               <line
-                x1={dragStartX} x2={x + diff.x * scale}
-                y1={dragStartY} y2={y + diff.y * scale}
+                x1={dragStartX} x2={newX}
+                y1={dragStartY} y2={newY}
                 stroke="black"
                 strokeWidth={1}
                 strokeDasharray='5,5'
@@ -50,8 +93,8 @@ const Stone = props => {
             </g>
             {diff && (
               <g>
-                <circle cx={ x + diff.x * scale } cy={ y + diff.y * scale } r="14.4" stroke="#666666" strokeWidth="1" fill="#999999"></circle>
-                <circle cx={ x + diff.x * scale } cy={ y + diff.y * scale } r="10" stroke="#666666" strokeWidth="0.25" fill={ color }></circle>
+                <circle cx={ newX } cy={ newY } r="14.4" stroke="#666666" strokeWidth="1" fill="#999999"></circle>
+                <circle cx={ newX } cy={ newY } r="10" stroke="#666666" strokeWidth="0.25" fill={ color }></circle>
               </g>
             )}
           </g>

@@ -3,6 +3,8 @@ import Sheet from "../components/sheet/Sheet";
 import classes from './Board.module.css';
 import ConfigureSheet from "../components/sheet/ConfigureSheet";
 import StoneSetup from "../components/sheet/StoneSetup";
+import { useDispatch, useSelector } from "react-redux";
+import { stonesActions } from "../store/stones-slice";
 
 const DUMMY_STONES = {};
 let posX = 1;
@@ -22,18 +24,16 @@ for(let i=1; i < 9; i++) {
 
 const Board = () => {
     const sheetContainerRef = useRef();
-    const [stones, updateStones] = useState(DUMMY_STONES);
+    const stones = useSelector(state => state.stones.stones);
+    const dispatch = useDispatch();
+    //const [stones, updateStones] = useState(DUMMY_STONES);
     const [tab, setTab] = useState('init');
     const titleRef = useRef();
     const commentRef = useRef();
 
     const moveStoneHandler = (id, x, y) => {
         console.log('Moving: '+ id + ' to : ', x ,y);
-        updateStones(stones => {
-            return Object.keys(stones).map(k => {
-                return stones[k].id === id ? { ...stones[k], x, y } : { ...stones[k] }
-            });
-        });
+        dispatch(stonesActions.moveStone({id, x, y}));
     };    
 
     const switchTab = (event, tab) => {
@@ -54,7 +54,8 @@ const Board = () => {
 
     const loadScenario = id => {
         const scenario = JSON.parse(localStorage.getItem('scenario-'+ id));
-        updateStones(scenario.stones);
+        //updateStones(scenario.stones);
+        dispatch(stonesActions.load(scenario.stones));
     };
 
     const myScenarios = //(() => {
@@ -63,7 +64,7 @@ const Board = () => {
 
     return (<>
         <div className={classes.sheet}>
-            <Sheet containerRef={sheetContainerRef} stones={stones} updateStones={updateStones} onMoveStone={moveStoneHandler} />
+            <Sheet containerRef={sheetContainerRef} stones={stones} updateStones="{updateStones}" onMoveStone={moveStoneHandler} />
         </div>
         <div className={classes.config}>
             <p>Tactic board: [Menu] [Conf...]</p>
@@ -73,7 +74,7 @@ const Board = () => {
                 <li><button onClick={(event) => switchTab(event, 'conf')} className={ tab === 'conf' ? classes.active : '' }>Configure sheet</button></li>
             </ul>
             { tab === 'conf' && <ConfigureSheet /> }
-            { tab === 'init' && <StoneSetup stones={stones} updateStones={updateStones} moveStoneHandler={moveStoneHandler} /> }
+            { tab === 'init' && <StoneSetup stones={stones} updateStones="{updateStones}" moveStoneHandler={moveStoneHandler} /> }
             { tab === 'comment' && (
             <form>
                 <div className="field">

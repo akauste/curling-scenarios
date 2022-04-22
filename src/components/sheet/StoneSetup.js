@@ -1,10 +1,14 @@
 import { useState, useCallback, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { stonesActions } from "../../store/stones-slice";
 import classes from './StoneSetup.module.css';
 
 const StoneSetup = (props) => {
   const { moveStoneHandler } = props;
-  const [stones, updateStones] = [props.stones, props.updateStones];
+  //const [stones, updateStones] = [props.stones, props.updateStones];
+  const stones = useSelector(state => state.stones);
+  const dispatch = useDispatch();
+
   const [gameMode, setGameMode] = useState(4);
   const [hammer, setHammer] = useState('red');
   const [rockPosition, setRockPosition] = useState(2);
@@ -18,21 +22,23 @@ const StoneSetup = (props) => {
   const switchToDoubles = () => {
     console.log('Doubles');
     setGameMode(2);
-    updateStones(stones => {
+    dispatch(stonesActions.showOnlyMdStones());
+    /*updateStones(stones => {
         return Object.keys(stones).map(k => { 
             const visible = stones[k].num > 6 ? false : true;
             return { ...stones[k], visible }
         });
-    });
+    });*/
   };
   const switchToTeams = () => {
     console.log('Teams');
     setGameMode(4);
-    updateStones(stones => {
+    dispatch(stonesActions.showAllStones());
+    /*updateStones(stones => {
       return Object.keys(stones).map(k => { 
         return { ...stones[k], visible: true }
       });
-    });
+    });*/
   };
 
 const houseRockX = useCallback(() => sheetWidth/2+(122*powerPlay), [sheetWidth, powerPlay]);
