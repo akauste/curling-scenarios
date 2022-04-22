@@ -32,7 +32,7 @@ code {
 .sheet-image {
   resize: vertical;
   width: auto;
-  max-height: 80vh;
+  height: calc(100vh - 8em);
   float:left;
   margin-right: 2em;
   overflow: hidden;
