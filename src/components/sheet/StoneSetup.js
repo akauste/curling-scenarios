@@ -72,7 +72,7 @@ const presetStones = useCallback(() => {
     const [houseRock, guardRock] = hammer === 'red' ? ['r6', 'y6'] : ['y6', 'r6'];
     moveStoneHandler(houseRock, houseRockX(), houseRockY());
     moveStoneHandler(guardRock, guardRockX(), guardRockY());
-}, [guardRockX, guardRockY, hammer, houseRockX, houseRockY]);
+}, [guardRockX, guardRockY, hammer, houseRockX, houseRockY, moveStoneHandler]);
 
 const initPowerPlayLeft = () => {
     setPowerPlay(-1);

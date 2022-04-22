@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Sheet from "../components/sheet/Sheet";
 import classes from './Board.module.css';
 import ConfigureSheet from "../components/sheet/ConfigureSheet";
@@ -14,10 +14,10 @@ const Board = () => {
     const titleRef = useRef();
     const commentRef = useRef();
 
-    const moveStoneHandler = (id, x, y) => {
+    const moveStoneHandler = useCallback((id, x, y) => {
         console.log('Moving: '+ id + ' to : ', x ,y);
         dispatch(stonesActions.moveStone({id, x, y}));
-    };
+    }, [dispatch]);
 
     const switchTab = (event, tab) => {
         event.preventDefault();

@@ -55,7 +55,7 @@ const Stone = props => {
       );
 
       if (isDragging) { //  && hideSourceOnDrag
-        const scale = sheetWidth / props.containerRef.current.offsetWidth;
+        const scale = sheetWidth / props.containerRef.current.clientWidth;
         const dragStartX = props.stone.prevPosition ? props.stone.prevPosition.x : x;
         const dragStartY = props.stone.prevPosition ? props.stone.prevPosition.y : y;
         if(!diff) return <div />;

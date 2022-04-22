@@ -28,10 +28,10 @@ const Sheet = (props) => {
           drop(item, monitor) {
             const delta = monitor.getDifferenceFromInitialOffset();
             const x = Math.round(
-              item.stone.x + delta.x * (sheet.width / svgRef.current.offsetWidth)
+              item.stone.x + delta.x * (sheet.width / svgRef.current.clientWidth)
             );
             const y = Math.round(
-              item.stone.y + delta.y * (sheet.width / svgRef.current.offsetWidth)
+              item.stone.y + delta.y * (sheet.width / svgRef.current.clientWidth)
             );
             dispatch(stonesActions.moveStone({id: item.stone.id, x, y}));
             return undefined;
@@ -43,7 +43,7 @@ const Sheet = (props) => {
     const viewBox = `0 0 ${sheet.width} ${ sheet.backgap + 183 + 640 + sheet.frontgap }`;
     console.log('ViewBox: '+ viewBox);
 
-    return (<div  ref={svgRef}>
+    return (<div ref={svgRef} style={{marginRight: '2em'}}>
         <svg ref={drop} viewBox={viewBox} className="sheet-image" style={{border: '1px solid silver', float: 'right'}}
     xmlns="http://www.w3.org/2000/svg">
     <g id="sheet">
