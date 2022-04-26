@@ -22,7 +22,33 @@ export const stonesSlice = createSlice({
   reducers: {
     moveStone: (state, action) => {
       const {id, x, y} = action.payload;
-      state.stones = Object.values(state.stones).map(val => val.id === id ? { ...val, x, y} : { ...val });
+
+      state.stones = Object.values(state.stones).map(val => ({ ...val }));
+      const stone = state.stones.find(s => s.id === id);
+      stone.x = x;
+      stone.y = y;
+      
+      // If stone is in corner, move it to outof play position, scaled to small
+      if(state.direction === 1) {
+        if(y < -(183+30)) {
+          stone.x = stone.team === 1 ? -183 + stone.num * 16 : 183 - stone.num * 16;
+          stone.y = -(183+38);
+        }
+        else if(y > 655) {
+          stone.x = stone.team === 1 ? -183 + stone.num * 16 : 183 - stone.num * 16;
+          stone.y = (640+28);
+        }
+      }
+      else {
+        if(y > (183+30)) {
+          stone.x = stone.team === 1 ? -183 + stone.num * 16 : 183 - stone.num * 16;
+          stone.y = (183+38);
+        }
+        else if(y < -655) {
+          stone.x = stone.team === 1 ? -183 + stone.num * 16 : 183 - stone.num * 16;
+          stone.y = -(640+28);
+        }
+      }
     },
     addStonePrevPosition: (state, action) => {
       const {id} = action.payload;

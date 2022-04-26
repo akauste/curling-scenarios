@@ -33,15 +33,6 @@ const Sheet = (props) => {
             let y = Math.round(
               item.stone.y + delta.y * (sheet.width / svgRef.current.clientWidth)
             );
-            // If stone is in corner, move it to outof play position, scaled to small
-            if(y < -183-30) {
-              x = item.stone.team === 1 ? -183 + item.stone.num * 16 : 183 - item.stone.num * 16;
-              y = -183-38;
-            }
-            else if(y > 655) {
-              x = item.stone.team === 1 ? -183 + item.stone.num * 16 : 183 - item.stone.num * 16;
-              y = 640+28;
-            }
             
             dispatch(stonesActions.moveStone({id: item.stone.id, x, y}));
             return undefined;
