@@ -84,6 +84,14 @@ export const stonesSlice = createSlice({
           stone.x = stone.team === 1 ? 200-stone.num*16 : -200+stone.num*16;
           stone.y = -(640+32);
         }
+        else {
+          const overlaps = getOverlaps(stone, state.stones);
+          if(overlaps.length) {
+            for (const other of overlaps) {
+              [stone.x, stone.y] = clearOverlaps(stone.x, stone.y, other);
+            }
+          }
+        }
       }
     },
     addStonePrevPosition: (state, action) => {
