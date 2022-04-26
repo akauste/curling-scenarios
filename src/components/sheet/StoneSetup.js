@@ -7,6 +7,7 @@ const StoneSetup = (props) => {
   const { moveStoneHandler } = props;
   const dispatch = useDispatch();
 
+  const direction = useSelector(state => state.stones.direction);
   const [gameMode, setGameMode] = useState(4);
   const [hammer, setHammer] = useState('red');
   const [rockPosition, setRockPosition] = useState(2);
@@ -14,6 +15,11 @@ const StoneSetup = (props) => {
 
   const team1Color = useSelector(state => state.sheet.team1color);
   const team2Color = useSelector(state => state.sheet.team2color);
+
+  const swapDirection = () => {
+    console.log('Swap direction');
+    dispatch(stonesActions.swapDirection());
+  }
 
   const switchToDoubles = () => {
     console.log('Doubles');
@@ -79,6 +85,13 @@ const initPowerPlayRight = () => {
 
   return (<>
     <h2>Initial stone setup</h2>
+      <div className="field">
+        <label>Direction:</label>
+        <div className={classes['btn-group']}>
+        { direction === 1 ? 'Away' : 'Home' }
+        <button type="button" onClick={swapDirection}>Swap</button>
+        </div>
+      </div>
       <div className="field">
         <label>Game format:</label>
         <div className={classes['btn-group']}>

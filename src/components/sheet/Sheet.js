@@ -9,6 +9,7 @@ import Stone from "./Stone";
 const Sheet = (props) => {
     const { onMoveStone } = props;
     const stones = useSelector(state => state.stones.stones);
+    const direction = useSelector(state => state.stones.direction);
     const sheet = useSelector(state => state.sheet);
     const dispatch = useDispatch();
     
@@ -49,7 +50,8 @@ const Sheet = (props) => {
         [moveStone]
     );
 
-    const viewBox = `${-sheet.width/2} ${-sheet.backgap-183} ${sheet.width} ${ sheet.backgap + 183 + 640 + sheet.frontgap }`;
+    const minY = direction === 1 ? -(sheet.backgap+183) : -(640 + sheet.frontgap);
+    const viewBox = `${-sheet.width/2} ${minY} ${sheet.width} ${ sheet.backgap + 183 + 640 + sheet.frontgap }`;
     console.log('ViewBox: '+ viewBox);
 
     return (<div ref={svgRef} style={{marginRight: '2em'}}>
@@ -68,10 +70,10 @@ const Sheet = (props) => {
       <circle cx={ 0 } cy={ 0 } r="122" stroke="black" strokeWidth="1" fill="white"></circle>
       <circle cx={ 0 } cy={ 0 } r="61" stroke="black" strokeWidth="1" fill={sheet.ring4color}></circle>
       <circle cx={ 0 } cy={ 0 } r={ sheet.buttonRadius } stroke="black" strokeWidth="1" fill="white"></circle>
-      <line x1={ 0 } x2={ 0 } y1={ -183 - sheet.backgap} y2={ 640+sheet.frontgap } stroke="black" strokeWidth="1"></line>
-      <line x1={-sheet.width/2} y1={ -183 } x2={ sheet.width/2 } y2={ -183 } stroke="black" strokeWidth="1"></line>
+      <line x1={ 0 } x2={ 0 } y1={ -direction*(183 + sheet.backgap)} y2={ direction*(640+sheet.frontgap) } stroke="black" strokeWidth="1"></line>
+      <line x1={-sheet.width/2} y1={ -direction*183 } x2={ sheet.width/2 } y2={ -direction*183 } stroke="black" strokeWidth="1"></line>
       <line x1={-sheet.width/2} y1={ 0 } x2={ sheet.width/2 } y2={ 0 } stroke="black" strokeWidth="1"></line>
-      <line x1={-sheet.width/2} y1={ 645 } x2={ sheet.width/2 } y2={ 645 } stroke="gray" strokeWidth="10"></line>
+      <line x1={-sheet.width/2} y1={ direction*645 } x2={ sheet.width/2 } y2={ direction*645 } stroke="gray" strokeWidth="10"></line>
     </g>
     
     <DoublesMarkings />

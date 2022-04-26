@@ -7,6 +7,7 @@ import ShadowStone from "./ShadowStone";
 const Stone = props => {
     const {x, y, id} = props.stone;
     const colors = [ useSelector(state => state.sheet.team1color), useSelector(state => state.sheet.team2color) ];
+    const direction = useSelector(state => state.stones.direction);
     const color = colors[props.stone.team - 1];
     const stones = useSelector(state => state.stones.stones);
     const sheetWidth = useSelector(state => state.sheet.width);
@@ -41,7 +42,11 @@ const Stone = props => {
                                : other.y + Math.sqrt(diameter**2 - diffX**2);
       return [x, y1];
     };
-
+    const getRadius = y => {
+      if (direction === 1)
+        return y < -(183+30) || y > 655 ? 8 : 14.4;
+      return y > (183+30) || y < -655 ? 8 : 14.4;
+    } 
     const [{ isDragging, diff }, drag] = useDrag(
         () => ({
           type: 'stone',
@@ -76,7 +81,7 @@ const Stone = props => {
             newY=0;
           }
         }
-        const r = y < -183-30 || y > 655 ? 8 : 14.4;
+        const r = getRadius(y);
 
         return (
           <g>
@@ -107,7 +112,7 @@ const Stone = props => {
     if(!props.stone.visible)
         return (<></>);
 
-    const r = y < -183-30 || y > 655 ? 8 : 14.4;
+    const r = getRadius(y);
     return (
         <g ref={drag} onDoubleClick={createShadow}>
             { props.stone.prevPosition && <ShadowStone currentX={x} currentY={y} stone={props.stone.prevPosition} /> }

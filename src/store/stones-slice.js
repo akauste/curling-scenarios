@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { stones: {} };
+const initialState = { direction: 1, stones: {} };
 let posX = 1;
 let posY = 1;
 for(let i=1; i < 9; i++) {
@@ -39,6 +39,10 @@ export const stonesSlice = createSlice({
     },
     showAllStones: (state) => {
       state.stones = Object.values(state.stones).map(val => val.num > 6 ? { ...val, visible: true } : { ...val })
+    },
+    swapDirection: (state) => {
+      state.direction = -state.direction;
+      state.stones = Object.values(state.stones).map(val => ({...val, x: -val.x, y: -val.y}))
     }
   }
 });
