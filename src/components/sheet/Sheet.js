@@ -7,7 +7,6 @@ import DoublesMarkings from "./DoublesMarkings";
 import Stone from "./Stone";
 
 const Sheet = (props) => {
-    //const { stones, onMoveStone } = props;
     const { onMoveStone } = props;
     const stones = useSelector(state => state.stones.stones);
     const sheet = useSelector(state => state.sheet);
@@ -22,14 +21,9 @@ const Sheet = (props) => {
       [onMoveStone]
     );
 
-    const [{isOver, isOverShallow, canDrop}, drop] = useDrop(
+    const [, drop] = useDrop(
         () => ({
           accept: 'stone',
-          collect: (monitor) => ({
-            isOver: monitor.isOver({shallow: false}),
-            isOverShallow: monitor.isOver({shallow: true}),
-            canDrop: monitor.canDrop(),
-          }),
           drop(item, monitor) {
             const delta = monitor.getDifferenceFromInitialOffset();
             let x = Math.round(
@@ -91,11 +85,6 @@ const Sheet = (props) => {
       <path d={`M ${sheet.width/2-14.4} ${sheet.backgap+183} Q ${sheet.width/2+183-14.4} ${sheet.backgap+183*1.5} ${sheet.width/2-14.4} ${sheet.backgap+183+640+2000}`} stroke="silver" fill="transparent"/>
     </g> */}
 
-    {/* <!-- // Test displaying shades, that represent what is behind guards //-->
-     <!-- // Move away, when works // -->
-    <g ng-repeat="stone in $ctrl.stones | limitDisplay:$ctrl.visualize.display_stone">
-        <g stoneshade ng-init="stone=stone"></g>
-    </g> */}
     { Object.values(stones).map((stone) => {
         return <Stone key={ stone.id } stone={stone} containerRef={svgRef} />;
     }) }

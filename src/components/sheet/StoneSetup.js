@@ -5,16 +5,12 @@ import classes from './StoneSetup.module.css';
 
 const StoneSetup = (props) => {
   const { moveStoneHandler } = props;
-  //const [stones, updateStones] = [props.stones, props.updateStones];
-  const stones = useSelector(state => state.stones);
   const dispatch = useDispatch();
 
   const [gameMode, setGameMode] = useState(4);
   const [hammer, setHammer] = useState('red');
   const [rockPosition, setRockPosition] = useState(2);
   const [powerPlay, setPowerPlay] = useState(0);
-  const backgap = useSelector(state => state.sheet.backgap);
-  const sheetWidth = useSelector(state => state.sheet.width);
 
   const team1Color = useSelector(state => state.sheet.team1color);
   const team2Color = useSelector(state => state.sheet.team2color);
@@ -23,22 +19,11 @@ const StoneSetup = (props) => {
     console.log('Doubles');
     setGameMode(2);
     dispatch(stonesActions.showOnlyMdStones());
-    /*updateStones(stones => {
-        return Object.keys(stones).map(k => { 
-            const visible = stones[k].num > 6 ? false : true;
-            return { ...stones[k], visible }
-        });
-    });*/
   };
   const switchToTeams = () => {
     console.log('Teams');
     setGameMode(4);
     dispatch(stonesActions.showAllStones());
-    /*updateStones(stones => {
-      return Object.keys(stones).map(k => { 
-        return { ...stones[k], visible: true }
-      });
-    });*/
   };
 
 const houseRockX = useCallback(() => (122*powerPlay), [powerPlay]);
