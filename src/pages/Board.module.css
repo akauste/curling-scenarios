@@ -2,7 +2,7 @@
 .sheet {
     resize: vertical;
     width: auto;
-    height: 80vh;
+    height: calc(100vh-2em);
     float:left;
     margin-right: 2em;
     overflow: hidden;

@@ -4,11 +4,13 @@ const initialState = { stones: {} };
 let posX = 1;
 let posY = 1;
 for(let i=1; i < 9; i++) {
-    const sideDist = posX*30;
+    //const sideDist = posX*30;
     const y = -15+30*posY;
 
-    initialState.stones['r'+i] = { x: 30+sideDist, y: y, id:'r'+i, type: 'stone', visible: true, num: i, team: 1 };
-    initialState.stones['y'+i] = { x: 445-sideDist, y: y, id:'y'+i, type: 'stone', visible: true, num: i, team: 2 };
+    initialState.stones['r'+i] = { x: 30+i*16, y: 8, id:'r'+i, type: 'stone', visible: true, num: i, team: 1 };
+    initialState.stones['y'+i] = { x: 430-i*16, y: 8, id:'y'+i, type: 'stone', visible: true, num: i, team: 2 };
+    //initialState.stones['r'+i] = { x: 30+sideDist, y: y, id:'r'+i, type: 'stone', visible: true, num: i, team: 1 };
+    //initialState.stones['y'+i] = { x: 445-sideDist, y: y, id:'y'+i, type: 'stone', visible: true, num: i, team: 2 };
     posX++;
     if(posX > 4) {
         posX = 1;

@@ -68,17 +68,19 @@ const Stone = props => {
             [newX, newY] = clearOverlaps(newX, newY, other);
           }
           if(!newX) {
-            console.log('fucked here!');
+            console.log('newX not here!');
             newX=0;
           }
           if(!newY) {
-            console.log('fucked here Y!');
+            console.log('newY not here!');
             newY=0;
           }
         }
+        const r = y < 30 ? 8 : 14.4;
 
         return (
           <g>
+            {newY < 30 && <rect width={sheetWidth} height={30} fill='none' stroke='silver' strokeWidth={0.5} /> }
             {diff && (
               <line
                 x1={dragStartX} x2={newX}
@@ -90,13 +92,13 @@ const Stone = props => {
             )}
             <g opacity={0.4}>
                 { props.stone.prevPosition && <ShadowStone currentX={x} currentY={y} stone={props.stone.prevPosition} /> }
-                <circle cx={ x } cy={ y } r="14.4" stroke="#666666" strokeWidth="1" fill="#cccccc"></circle>
-                <circle cx={ x } cy={ y } r="10" stroke="#666666" strokeWidth="0.25" fill={ color }></circle>
+                <circle cx={ x } cy={ y } r={r} stroke="#666666" strokeWidth="1" fill="#cccccc"></circle>
+                <circle cx={ x } cy={ y } r={r*0.69} stroke="#666666" strokeWidth="0.25" fill={ color }></circle>
             </g>
             {diff && (
               <g>
-                <circle cx={ newX } cy={ newY } r="14.4" stroke="#666666" strokeWidth="1" fill="#999999"></circle>
-                <circle cx={ newX } cy={ newY } r="10" stroke="#666666" strokeWidth="0.25" fill={ color }></circle>
+                <circle cx={ newX } cy={ newY } r={14.4} stroke="#666666" strokeWidth="1" fill="#999999"></circle>
+                <circle cx={ newX } cy={ newY } r={14.4*0.69} stroke="#666666" strokeWidth="0.25" fill={ color }></circle>
               </g>
             )}
           </g>
@@ -104,11 +106,13 @@ const Stone = props => {
     }
     if(!props.stone.visible)
         return (<></>);
+
+    const r = y < 30 ? 8 : 14.4;
     return (
         <g ref={drag} onDoubleClick={createShadow}>
             { props.stone.prevPosition && <ShadowStone currentX={x} currentY={y} stone={props.stone.prevPosition} /> }
-            <circle cx={ x } cy={ y } r="14.4" stroke="#666666" strokeWidth="1" fill="#999999"></circle>
-            <circle cx={ x } cy={ y } r="10" stroke="#666666" strokeWidth="0.25" fill={ color }></circle>
+            <circle cx={ x } cy={ y } r={r} stroke="#666666" strokeWidth="1" fill="#999999"></circle>
+            <circle cx={ x } cy={ y } r={r*0.69} stroke="#666666" strokeWidth="0.25" fill={ color }></circle>
         </g>
     );
 };

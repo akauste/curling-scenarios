@@ -22,17 +22,29 @@ const Sheet = (props) => {
       [onMoveStone]
     );
 
-    const [, drop] = useDrop(
+    const [{isOver, isOverShallow, canDrop}, drop] = useDrop(
         () => ({
           accept: 'stone',
+          collect: (monitor) => ({
+            isOver: monitor.isOver({shallow: false}),
+            isOverShallow: monitor.isOver({shallow: true}),
+            canDrop: monitor.canDrop(),
+          }),
           drop(item, monitor) {
             const delta = monitor.getDifferenceFromInitialOffset();
-            const x = Math.round(
+            let x = Math.round(
               item.stone.x + delta.x * (sheet.width / svgRef.current.clientWidth)
             );
-            const y = Math.round(
+            let y = Math.round(
               item.stone.y + delta.y * (sheet.width / svgRef.current.clientWidth)
             );
+            // If stone is in corner, move it to orig position, scaled to small
+            if(y < 30) {
+              x = item.stone.team === 1 ? 30 + item.stone.num * 16 : 430 - item.stone.num * 16;
+              y = 8;
+
+            }
+            
             dispatch(stonesActions.moveStone({id: item.stone.id, x, y}));
             return undefined;
           }
@@ -64,7 +76,7 @@ const Sheet = (props) => {
       <line x1="0" y1={ sheet.backgap + 183 } x2={ sheet.width } y2={ sheet.backgap + 183 } stroke="black" strokeWidth="1"></line>
       <line x1="0" y1={ sheet.backgap + 183 + 645 } x2={ sheet.width } y2={ sheet.backgap + 183 + 645 } stroke="gray" strokeWidth="10"></line>
     </g>
-
+    
     <DoublesMarkings sheet={sheet} />
 
     {/* <g>
