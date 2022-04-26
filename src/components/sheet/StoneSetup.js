@@ -41,32 +41,32 @@ const StoneSetup = (props) => {
     });*/
   };
 
-const houseRockX = useCallback(() => sheetWidth/2+(122*powerPlay), [sheetWidth, powerPlay]);
+const houseRockX = useCallback(() => (122*powerPlay), [powerPlay]);
 const guardRockX = useCallback(() => {
     switch(rockPosition) {
         case 1: 
         case 2:
-            return sheetWidth/2 + powerPlay * 109;
+            return powerPlay * 109;
         case 3:
         case 4:
-            return sheetWidth/2 + powerPlay * 107;
+            return powerPlay * 107;
         case 5:
         case 6:
         default:
-            return sheetWidth/2 + powerPlay * 104;
+            return powerPlay * 104;
     }
-}, [powerPlay, rockPosition, sheetWidth]);
-const houseRockY = useCallback(() => powerPlay ? backgap+183+15 : backgap+183+15-61, [powerPlay, backgap]);
+}, [powerPlay, rockPosition]);
+const houseRockY = useCallback(() => powerPlay ? 15 : +15-61, [powerPlay]);
 const guardRockY = useCallback(() => {
     switch(rockPosition) {
-        case 1: return backgap+183*2+228.6-91.4-15;
-        case 2: return backgap+183*2+228.6-91.4+15;
-        case 3: return backgap+183*2+228.6-15;
-        case 4: return backgap+183*2+228.6+15;
-        case 5: return backgap+183*2+228.6+91.4-15;
-        default: return backgap+183*2+228.6+91.4+15;
+        case 1: return 183+228.6-91.4-15;
+        case 2: return 183+228.6-91.4+15;
+        case 3: return 183+228.6-15;
+        case 4: return 183+228.6+15;
+        case 5: return 183+228.6+91.4-15;
+        default: return 183+228.6+91.4+15;
     }
-}, [rockPosition, backgap]);
+}, [rockPosition]);
 
 const presetStones = useCallback(() => {
     const [houseRock, guardRock] = hammer === 'red' ? ['r6', 'y6'] : ['y6', 'r6'];

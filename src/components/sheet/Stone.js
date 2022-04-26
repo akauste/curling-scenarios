@@ -76,7 +76,7 @@ const Stone = props => {
             newY=0;
           }
         }
-        const r = y < 30 ? 8 : 14.4;
+        const r = y < -183-30 || y > 655 ? 8 : 14.4;
 
         return (
           <g>
@@ -107,7 +107,7 @@ const Stone = props => {
     if(!props.stone.visible)
         return (<></>);
 
-    const r = y < 30 ? 8 : 14.4;
+    const r = y < -183-30 || y > 655 ? 8 : 14.4;
     return (
         <g ref={drag} onDoubleClick={createShadow}>
             { props.stone.prevPosition && <ShadowStone currentX={x} currentY={y} stone={props.stone.prevPosition} /> }

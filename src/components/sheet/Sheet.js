@@ -38,11 +38,14 @@ const Sheet = (props) => {
             let y = Math.round(
               item.stone.y + delta.y * (sheet.width / svgRef.current.clientWidth)
             );
-            // If stone is in corner, move it to orig position, scaled to small
-            if(y < 30) {
-              x = item.stone.team === 1 ? 30 + item.stone.num * 16 : 430 - item.stone.num * 16;
-              y = 8;
-
+            // If stone is in corner, move it to outof play position, scaled to small
+            if(y < -183-30) {
+              x = item.stone.team === 1 ? -183 + item.stone.num * 16 : 183 - item.stone.num * 16;
+              y = -183-38;
+            }
+            else if(y > 655) {
+              x = item.stone.team === 1 ? -183 + item.stone.num * 16 : 183 - item.stone.num * 16;
+              y = 640+28;
             }
             
             dispatch(stonesActions.moveStone({id: item.stone.id, x, y}));
@@ -52,7 +55,7 @@ const Sheet = (props) => {
         [moveStone]
     );
 
-    const viewBox = `0 0 ${sheet.width} ${ sheet.backgap + 183 + 640 + sheet.frontgap }`;
+    const viewBox = `${-sheet.width/2} ${-sheet.backgap-183} ${sheet.width} ${ sheet.backgap + 183 + 640 + sheet.frontgap }`;
     console.log('ViewBox: '+ viewBox);
 
     return (<div ref={svgRef} style={{marginRight: '2em'}}>
@@ -67,17 +70,17 @@ const Sheet = (props) => {
         <feBlend in="SourceGraphic" in2="blurOut" mode="normal"></feBlend>
         </filter>
       </defs>
-      <circle cx={ sheet.width/2 } cy={ sheet.backgap + 183 } r="183" stroke="black" strokeWidth="1" fill={sheet.ring12color}></circle>
-      <circle cx={ sheet.width/2 } cy={ sheet.backgap + 183 } r="122" stroke="black" strokeWidth="1" fill="white"></circle>
-      <circle cx={ sheet.width/2 } cy={ sheet.backgap + 183 } r="61" stroke="black" strokeWidth="1" fill={sheet.ring4color}></circle>
-      <circle cx={ sheet.width/2 } cy={ sheet.backgap + 183 } r={ sheet.buttonRadius } stroke="black" strokeWidth="1" fill="white"></circle>
-      <line x1={ sheet.width/2 } y1="0" x2={ sheet.width/2 } y2={ sheet.backgap + 823 } stroke="black" strokeWidth="1"></line>
-      <line x1="0" y1={ sheet.backgap } x2={ sheet.width } y2={ sheet.backgap } stroke="black" strokeWidth="1"></line>
-      <line x1="0" y1={ sheet.backgap + 183 } x2={ sheet.width } y2={ sheet.backgap + 183 } stroke="black" strokeWidth="1"></line>
-      <line x1="0" y1={ sheet.backgap + 183 + 645 } x2={ sheet.width } y2={ sheet.backgap + 183 + 645 } stroke="gray" strokeWidth="10"></line>
+      <circle cx={ 0 } cy={ 0 } r="183" stroke="black" strokeWidth="1" fill={sheet.ring12color}></circle>
+      <circle cx={ 0 } cy={ 0 } r="122" stroke="black" strokeWidth="1" fill="white"></circle>
+      <circle cx={ 0 } cy={ 0 } r="61" stroke="black" strokeWidth="1" fill={sheet.ring4color}></circle>
+      <circle cx={ 0 } cy={ 0 } r={ sheet.buttonRadius } stroke="black" strokeWidth="1" fill="white"></circle>
+      <line x1={ 0 } x2={ 0 } y1={ -183 - sheet.backgap} y2={ 640+sheet.frontgap } stroke="black" strokeWidth="1"></line>
+      <line x1={-sheet.width/2} y1={ -183 } x2={ sheet.width/2 } y2={ -183 } stroke="black" strokeWidth="1"></line>
+      <line x1={-sheet.width/2} y1={ 0 } x2={ sheet.width/2 } y2={ 0 } stroke="black" strokeWidth="1"></line>
+      <line x1={-sheet.width/2} y1={ 645 } x2={ sheet.width/2 } y2={ 645 } stroke="gray" strokeWidth="10"></line>
     </g>
     
-    <DoublesMarkings sheet={sheet} />
+    <DoublesMarkings />
 
     {/* <g>
       <path d={`M ${sheet.width/2-122} ${sheet.backgap+183} Q ${sheet.width/2} ${sheet.backgap+183*1.5} ${sheet.width/2} ${sheet.backgap+183+640+2000}`} stroke="green" fill="transparent"/>
