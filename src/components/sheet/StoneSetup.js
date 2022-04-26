@@ -61,9 +61,9 @@ const guardRockY = useCallback(() => {
 
 const presetStones = useCallback(() => {
     const [houseRock, guardRock] = hammer === 'red' ? ['r6', 'y6'] : ['y6', 'r6'];
-    moveStoneHandler(houseRock, houseRockX(), houseRockY());
-    moveStoneHandler(guardRock, guardRockX(), guardRockY());
-}, [guardRockX, guardRockY, hammer, houseRockX, houseRockY, moveStoneHandler]);
+    moveStoneHandler(houseRock, houseRockX(), direction*houseRockY());
+    moveStoneHandler(guardRock, guardRockX(), direction*guardRockY());
+}, [guardRockX, guardRockY, hammer, houseRockX, houseRockY, moveStoneHandler,direction]);
 
 const initPowerPlayLeft = () => {
     setPowerPlay(-1);

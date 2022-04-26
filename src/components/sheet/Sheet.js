@@ -76,7 +76,7 @@ const Sheet = (props) => {
       <line x1={-sheet.width/2} y1={ direction*645 } x2={ sheet.width/2 } y2={ direction*645 } stroke="gray" strokeWidth="10"></line>
     </g>
     
-    <DoublesMarkings />
+    <DoublesMarkings direction={direction} />
 
     {/* <g>
       <path d={`M ${sheet.width/2-122} ${sheet.backgap+183} Q ${sheet.width/2} ${sheet.backgap+183*1.5} ${sheet.width/2} ${sheet.backgap+183+640+2000}`} stroke="green" fill="transparent"/>
