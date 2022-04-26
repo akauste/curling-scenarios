@@ -31,22 +31,22 @@ export const stonesSlice = createSlice({
       // If stone is in corner, move it to outof play position, scaled to small
       if(state.direction === 1) {
         if(y < -(183+30)) {
-          stone.x = stone.team === 1 ? -183 + stone.num * 16 : 183 - stone.num * 16;
+          stone.x = stone.team === 1 ? -200+stone.num*16 : 200-stone.num*16;
           stone.y = -(183+38);
         }
         else if(y > 655) {
-          stone.x = stone.team === 1 ? -183 + stone.num * 16 : 183 - stone.num * 16;
-          stone.y = (640+28);
+          stone.x = stone.team === 1 ? -200+stone.num*16 : 200-stone.num*16;
+          stone.y = (640+32);
         }
       }
       else {
         if(y > (183+30)) {
-          stone.x = stone.team === 1 ? -183 + stone.num * 16 : 183 - stone.num * 16;
+          stone.x = stone.team === 1 ? 200-stone.num*16 : -200+stone.num*16;
           stone.y = (183+38);
         }
         else if(y < -655) {
-          stone.x = stone.team === 1 ? -183 + stone.num * 16 : 183 - stone.num * 16;
-          stone.y = -(640+28);
+          stone.x = stone.team === 1 ? 200-stone.num*16 : -200+stone.num*16;
+          stone.y = -(640+32);
         }
       }
     },
