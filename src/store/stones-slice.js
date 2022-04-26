@@ -15,6 +15,34 @@ for(let i=1; i < 9; i++) {
         posY++;
     }
 };
+const diameter = 28.8; // The default diameter
+
+const isOverlap = (x1, y1, x2, y2) => {
+  const dX = Math.abs(x1 - x2);
+  const dY = Math.abs(y1-y2);
+  if(dX > diameter || dY > diameter || Math.sqrt(dX*dX+dY*dY) > diameter)
+    return false;
+  return true;
+};
+export const getOverlaps = (stone, others) => {
+  return others.filter(other => other.id !== stone.id && isOverlap(other.x, other.y, stone.x, stone.y));
+};
+
+// Very naive aproach, should be fixed with one that takes care more complex
+// overlaps (multiple stones case), but this is ok for now
+export const clearOverlaps = (x,y, other) => {
+  console.log('Clearing overlaps', x, y, other, other.x, Math.abs(y-other.y));
+  const diffX = Math.abs(x-other.x);
+  const diffY = Math.abs(y-other.y);
+  if(diffX > diffY) {
+    const x1 = (x < other.x) ? other.x - Math.sqrt(diameter**2 - diffY**2)
+                             : other.x + Math.sqrt(diameter**2 - diffY**2);
+    return [x1, y];
+  }
+  const y1 = (y < other.y) ? other.y - Math.sqrt(diameter**2 - diffX**2)
+                           : other.y + Math.sqrt(diameter**2 - diffX**2);
+  return [x, y1];
+};
 
 export const stonesSlice = createSlice({
   name: 'stones',
@@ -37,6 +65,14 @@ export const stonesSlice = createSlice({
         else if(y > 655) {
           stone.x = stone.team === 1 ? -200+stone.num*16 : 200-stone.num*16;
           stone.y = (640+32);
+        }
+        else {
+          const overlaps = getOverlaps(stone, state.stones);
+          if(overlaps.length) {
+            for (const other of overlaps) {
+              [stone.x, stone.y] = clearOverlaps(stone.x, stone.y, other);
+            }
+          }
         }
       }
       else {

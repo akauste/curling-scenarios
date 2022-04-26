@@ -68,7 +68,7 @@ const Stone = props => {
         let newY = y + diff.y * scale;
         const overlaps = otherStones.filter(ot => isOverlap(ot.x, ot.y, newX, newY));
         if(overlaps.length) {
-          console.log('Found overlaps: ', overlaps);
+          console.log('Found overlaps: ', overlaps.length, overlaps);
           for (const other of overlaps) {
             [newX, newY] = clearOverlaps(newX, newY, other);
           }
