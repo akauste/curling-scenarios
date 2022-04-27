@@ -26,7 +26,10 @@ button {
   border-top-right-radius: 0.5em;
   border-bottom-right-radius: 0.5em;
 }
-
+.btn {
+  color: white;
+  background-color: gray;
+}
 .activeBtn {
   color: white;
   background-color: #3377ff;

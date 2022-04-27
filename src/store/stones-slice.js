@@ -96,7 +96,8 @@ export const stonesSlice = createSlice({
       state.historyBack.push({ direction: state.direction, stones: state.stones});
       state.historyForward = [];
 
-      state.stones = initialState;
+      state.direction = initialState.direction;
+      state.stones = initialState.stones;
     },
     load: (state, action) => {
       state.historyBack.push({ direction: state.direction, stones: state.stones});

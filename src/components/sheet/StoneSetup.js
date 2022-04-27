@@ -78,6 +78,12 @@ const initPowerPlayRight = () => {
     presetStones();
 };
 
+  const resetHandler = event => {
+    event.preventDefault();
+    dispatch(stonesActions.reset());
+  };
+
+
   useEffect(() => {
     if(gameMode === 2)
       presetStones();
@@ -127,6 +133,12 @@ const initPowerPlayRight = () => {
               </div>
           </div>
       </div>)}
+      <div className="field">
+          <label>&nbsp;</label>
+          <div className={classes['btn-group']}>
+            <button type="button" onClick={resetHandler} className={classes.btn}>Reset</button>
+            </div>
+      </div>
   </>);
 }
 export default StoneSetup;
