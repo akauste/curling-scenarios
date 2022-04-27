@@ -8,7 +8,7 @@ import { stonesActions } from "../store/stones-slice";
 
 const Board = () => {
     const sheetContainerRef = useRef();
-    const stones = useSelector(state => state.stones.stones);
+    const stones = useSelector(state => state.stones);
     const dispatch = useDispatch();
     const [tab, setTab] = useState('init');
     const titleRef = useRef();
@@ -28,7 +28,8 @@ const Board = () => {
         const maxId = localStorage.getItem('maxScenarioId') || 1;
         localStorage.setItem('scenario-'+ maxId, JSON.stringify({
             scenarioId: maxId,
-            stones,
+            direction: stones.direction,
+            stones: stones.stones,
             title: titleRef.current.value,
             comment: commentRef.current.value,
         }));
@@ -37,8 +38,7 @@ const Board = () => {
 
     const loadScenario = id => {
         const scenario = JSON.parse(localStorage.getItem('scenario-'+ id));
-        //updateStones(scenario.stones);
-        dispatch(stonesActions.load(scenario.stones));
+        dispatch(stonesActions.load({direction: scenario.direction || 1, stones: scenario.stones}));
     };
 
     const myScenarios = //(() => {
@@ -47,7 +47,7 @@ const Board = () => {
 
     return (<>
         <div className={classes.sheet}>
-            <Sheet containerRef={sheetContainerRef} stones={stones} updateStones="{updateStones}" onMoveStone={moveStoneHandler} />
+            <Sheet containerRef={sheetContainerRef} onMoveStone={moveStoneHandler} />
         </div>
         <div className={classes.config}>
             <p>Tactic board: [Menu] [Conf...]</p>

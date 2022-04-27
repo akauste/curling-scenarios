@@ -102,7 +102,8 @@ export const stonesSlice = createSlice({
       state.stones = initialState;
     },
     load: (state, action) => {
-      state.stones = action.payload;
+      state.direction = action.payload.direction;
+      state.stones = action.payload.stones;
     },
     showOnlyMdStones: (state) => {
       state.stones = Object.values(state.stones).map(val => val.num > 6 ? { ...val, visible: false } : { ...val })
@@ -113,7 +114,7 @@ export const stonesSlice = createSlice({
     swapDirection: (state) => {
       state.direction = -state.direction;
       state.stones = Object.values(state.stones).map(val => ({...val, x: -val.x, y: -val.y}))
-    }
+    },
   }
 });
 
