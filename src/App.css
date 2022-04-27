@@ -9,7 +9,9 @@
 
 .main {
   width: 90%;
-  margin: 0 auto;
+  margin: 1rem auto;
+  padding: 0;
+  border: 1px solid transparent;
 }
 
 @media (prefers-reduced-motion: no-preference) {
