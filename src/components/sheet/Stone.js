@@ -14,6 +14,21 @@ const Stone = props => {
     const otherStones = Object.values(stones).filter(s => s.id !== id);
     const dispatch = useDispatch();
 
+    let clickCount = 0;
+    const clickHandler = event => {
+      clickCount += 1;
+        setTimeout(() => {
+          if (clickCount === 1) {
+            //console.log('single click: ', count);
+            toggleContextMenu(event);
+          } else if (clickCount === 2) {
+            //console.log('setTimeout onDoubleClick: ', count);
+            createShadow(event);
+          }
+          clickCount = 0;
+      }, 300);
+    }
+
     const toggleContextMenu = event => {
       props.showContextMenu(event, props.stone);
     }
@@ -118,7 +133,7 @@ const Stone = props => {
 
     const r = getRadius(y);
     return (
-        <g ref={drag} onClick={toggleContextMenu} onDoubleClick={createShadow}>
+        <g ref={drag} onClick={clickHandler}>
             { props.stone.prevPosition && <ShadowStone currentX={x} currentY={y} stone={props.stone.prevPosition} /> }
             <circle cx={ x } cy={ y } r={r} stroke="#666666" strokeWidth="1" fill="#999999"></circle>
             <circle cx={ x } cy={ y } r={r*0.69} stroke="#666666" strokeWidth="0.25" fill={ color }></circle>
