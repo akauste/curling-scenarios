@@ -49,7 +49,19 @@ const Sheet = (props) => {
     const [showContext, setShowContext] = useState(null);
     const toggleContextMenuHandler = (event, stone) => {
       event.preventDefault();
-      setShowContext({event, stone});
+      const actions = [
+        {
+          id: 1,
+          label: 'Attach comment',
+          action: () => { console.log('attach comment - not implemented') },
+        },
+        {
+          id: 2,
+          label: 'Add previous position shadow',
+          action: () => { dispatch(stonesActions.addStonePrevPosition({id: stone.id})); },
+        },
+      ];
+      setShowContext({event, stone, actions});
     };
     const closeContextMenu = (event) => {
       event.preventDefault();
@@ -97,7 +109,7 @@ const Sheet = (props) => {
 
         Sorry, your browser does not support inline SVG.
     </svg>
-    { showContext && <ContextMenu x={showContext.event.clientX} y={showContext.event.clientY} cliH={showContext.event.clientHeight} ev={showContext.event} closeHandler={closeContextMenu} targetEl={showContext.event.target} actions={[]} /> }
+    { showContext && <ContextMenu x={showContext.event.clientX} y={showContext.event.clientY} closeHandler={closeContextMenu} actions={showContext.actions} /> }
   </div>);
 };
 export default Sheet;
