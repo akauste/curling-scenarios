@@ -5,6 +5,7 @@ import ConfigureSheet from "../components/sheet/ConfigureSheet";
 import StoneSetup from "../components/sheet/StoneSetup";
 import { useDispatch, useSelector } from "react-redux";
 import { stonesActions } from "../store/stones-slice";
+import LocalStorageManager from "../components/scenario/LocalStorageManager";
 
 const Board = () => {
     const sheetContainerRef = useRef();
@@ -36,21 +37,6 @@ const Board = () => {
             comment: commentRef.current.value,
         }));
         localStorage.setItem('maxScenarioId', maxId+1);
-    };
-
-    const [myScenarios, setMyScenarios] = //(() => {
-        useState(
-            Object.keys(localStorage).filter((k,v) => k.toString().match(/^scenario-\d+/)).map(k => JSON.parse(localStorage.getItem(k)))
-        );
-    //})();
-
-    const loadScenario = id => {
-        const scenario = JSON.parse(localStorage.getItem('scenario-'+ id));
-        dispatch(stonesActions.load({direction: scenario.direction || 1, stones: scenario.stones}));
-    };
-    const deleteScenario = id => {
-        const scenario = localStorage.removeItem('scenario-'+ id);
-        setMyScenarios(cur => cur.filter(scene => scene.scenarioId !== id));
     };
 
     return (<>
@@ -85,16 +71,7 @@ const Board = () => {
                 <button type="button" onClick={localSaveHandler}>Save locally</button>
             </form>
             )}
-            <h2>Locally saved scenarios</h2>
-            <ul>
-                { myScenarios.map(scene => (
-                    <li key={ scene.scenarioId }>
-                        [{scene.scenarioId}] { scene.title }
-                        <button onClick={() => {loadScenario(scene.scenarioId)}}>Load</button>
-                        <button onClick={() => {deleteScenario(scene.scenarioId)}}>Delete</button>
-                    </li>
-                ))}
-            </ul>
+            <LocalStorageManager />
         </div>
     </>);
 }
