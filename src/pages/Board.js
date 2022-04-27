@@ -38,14 +38,20 @@ const Board = () => {
         localStorage.setItem('maxScenarioId', maxId+1);
     };
 
+    const [myScenarios, setMyScenarios] = //(() => {
+        useState(
+            Object.keys(localStorage).filter((k,v) => k.toString().match(/^scenario-\d+/)).map(k => JSON.parse(localStorage.getItem(k)))
+        );
+    //})();
+
     const loadScenario = id => {
         const scenario = JSON.parse(localStorage.getItem('scenario-'+ id));
         dispatch(stonesActions.load({direction: scenario.direction || 1, stones: scenario.stones}));
     };
-
-    const myScenarios = //(() => {
-        Object.keys(localStorage).filter((k,v) => k.toString().match(/^scenario-\d+/)).map(k => JSON.parse(localStorage.getItem(k)));
-    //})();
+    const deleteScenario = id => {
+        const scenario = localStorage.removeItem('scenario-'+ id);
+        setMyScenarios(cur => cur.filter(scene => scene.scenarioId !== id));
+    };
 
     return (<>
         <div className={classes.sheet}>
@@ -85,6 +91,7 @@ const Board = () => {
                     <li key={ scene.scenarioId }>
                         [{scene.scenarioId}] { scene.title }
                         <button onClick={() => {loadScenario(scene.scenarioId)}}>Load</button>
+                        <button onClick={() => {deleteScenario(scene.scenarioId)}}>Delete</button>
                     </li>
                 ))}
             </ul>
