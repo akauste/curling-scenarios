@@ -102,9 +102,15 @@ export const stonesSlice = createSlice({
       state.stones = Object.values(state.stones).map(val => val.id === id ? { ...val, prevPosition: { ...val }} : { ...val });
     },
     reset: (state) => {
+      state.historyBack.push({ direction: state.direction, stones: state.stones});
+      state.historyForward = [];
+
       state.stones = initialState;
     },
     load: (state, action) => {
+      state.historyBack.push({ direction: state.direction, stones: state.stones});
+      state.historyForward = [];
+
       state.direction = action.payload.direction;
       state.stones = action.payload.stones;
     },
@@ -115,6 +121,9 @@ export const stonesSlice = createSlice({
       state.stones = Object.values(state.stones).map(val => val.num > 6 ? { ...val, visible: true } : { ...val })
     },
     swapDirection: (state) => {
+      state.historyBack.push({ direction: state.direction, stones: state.stones});
+      state.historyForward = [];
+      
       state.direction = -state.direction;
       state.stones = Object.values(state.stones).map(val => ({...val, x: -val.x, y: -val.y}))
     },
