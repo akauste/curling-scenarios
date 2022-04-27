@@ -28,7 +28,7 @@ const Board = () => {
     }
 
     const localSaveHandler = () => {
-        const maxId = localStorage.getItem('maxScenarioId') || 1;
+        const maxId = +(localStorage.getItem('maxScenarioId') || 1);
         localStorage.setItem('scenario-'+ maxId, JSON.stringify({
             scenarioId: maxId,
             direction: stones.direction,
