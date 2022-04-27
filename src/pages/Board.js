@@ -56,9 +56,9 @@ const Board = () => {
         <div className={classes.config}>
             <p>Tactic board: [Menu] [Conf...]</p>
             <ul className={classes.tabs}>
-                <li><button onClick={(event) => switchTab(event, 'init')} className={ tab === 'init' ? classes.active : '' }>Initial setup</button></li>
-                <li><button onClick={(event) => switchTab(event, 'comment')} className={ tab === 'comment' ? classes.active : '' }>Comments</button></li>
-                <li><button onClick={(event) => switchTab(event, 'conf')} className={ tab === 'conf' ? classes.active : '' }>Configure sheet</button></li>
+                <li><button onClick={event => switchTab(event, 'init')} className={ tab === 'init' ? classes.active : '' }>Initial setup</button></li>
+                <li><button onClick={event => switchTab(event, 'comment')} className={ tab === 'comment' ? classes.active : '' }>Comments</button></li>
+                <li><button onClick={event => switchTab(event, 'conf')} className={ tab === 'conf' ? classes.active : '' }>Configure sheet</button></li>
             </ul>
             { tab === 'conf' && <ConfigureSheet /> }
             { tab === 'init' && <StoneSetup stones={stones} updateStones="{updateStones}" moveStoneHandler={moveStoneHandler} /> }
