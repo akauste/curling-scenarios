@@ -46,10 +46,13 @@ export const clearOverlaps = (x,y, other) => {
 
 export const stonesSlice = createSlice({
   name: 'stones',
-  initialState,
+  initialState: {...initialState, historyBack: [], historyForward: []},
   reducers: {
     moveStone: (state, action) => {
       const {id, x, y} = action.payload;
+
+      state.historyBack.push({ direction: state.direction, stones: state.stones});
+      state.historyForward = [];
 
       state.stones = Object.values(state.stones).map(val => ({ ...val }));
       const stone = state.stones.find(s => s.id === id);
@@ -114,6 +117,22 @@ export const stonesSlice = createSlice({
     swapDirection: (state) => {
       state.direction = -state.direction;
       state.stones = Object.values(state.stones).map(val => ({...val, x: -val.x, y: -val.y}))
+    },
+    back: (state) => {
+      if(state.historyBack.length) {
+        const prevState = state.historyBack.pop();
+        state.historyForward.push({direction: state.direction, stones: state.stones});
+        state.direction = prevState.direction;
+        state.stones = prevState.stones;
+      }
+    },
+    forward: (state) => {
+      if(state.historyForward.length) {
+        const nextState = state.historyForward.pop();
+        state.historyBack.push({direction: state.direction, stones: state.stones});
+        state.direction = nextState.direction;
+        state.stones = nextState.stones;
+      }
     },
   }
 });

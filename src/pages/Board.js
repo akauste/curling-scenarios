@@ -9,6 +9,8 @@ import { stonesActions } from "../store/stones-slice";
 const Board = () => {
     const sheetContainerRef = useRef();
     const stones = useSelector(state => state.stones);
+    const hasHistoryBack    = useSelector(state => state.stones.historyBack.length);
+    const hasHistoryForward = useSelector(state => state.stones.historyForward.length);
     const dispatch = useDispatch();
     const [tab, setTab] = useState('init');
     const titleRef = useRef();
@@ -47,6 +49,8 @@ const Board = () => {
 
     return (<>
         <div className={classes.sheet}>
+            { hasHistoryBack ? <button className={classes.smallBtn} onClick={()=>{dispatch(stonesActions.back())}}>Back</button> : null }
+            { hasHistoryForward ? <button className={`${classes.smallBtn} ${classes.pullRight}`} onClick={()=>{dispatch(stonesActions.forward())}}>Forward</button> : null }
             <Sheet containerRef={sheetContainerRef} onMoveStone={moveStoneHandler} />
         </div>
         <div className={classes.config}>

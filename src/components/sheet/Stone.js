@@ -14,6 +14,10 @@ const Stone = props => {
     const otherStones = Object.values(stones).filter(s => s.id !== id);
     const dispatch = useDispatch();
 
+    const toggleContextMenu = event => {
+      props.showContextMenu(event, props.stone);
+    }
+
     // Stone must receive the coordinate calculation function based on the sheet config somehow
     // Stone itself should have position, that is no relative to that, maybe having origo at tee?
     
@@ -114,7 +118,7 @@ const Stone = props => {
 
     const r = getRadius(y);
     return (
-        <g ref={drag} onDoubleClick={createShadow}>
+        <g ref={drag} onClick={toggleContextMenu} onDoubleClick={createShadow}>
             { props.stone.prevPosition && <ShadowStone currentX={x} currentY={y} stone={props.stone.prevPosition} /> }
             <circle cx={ x } cy={ y } r={r} stroke="#666666" strokeWidth="1" fill="#999999"></circle>
             <circle cx={ x } cy={ y } r={r*0.69} stroke="#666666" strokeWidth="0.25" fill={ color }></circle>

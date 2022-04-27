@@ -1,0 +1,40 @@
+.menuBelow {
+  position: absolute;
+  transform: translate(-50%, 5%);
+  width: 150px;
+  border: 1px solid gray; 
+  background-color: white;
+}
+
+.menuAbove {
+  position: absolute;
+  transform: translate(-50%, -105%);
+  width: 150;
+  border: 1px solid gray; 
+  background-color: white;
+}
+
+.menu {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+}
+.menu li {
+  padding: 0;
+}
+.menu li button {
+  background-color: transparent;
+  color: gray;
+  border: 1px dotted lime;
+  border-radius: 0px;
+  width: 100%;
+  border: 0;
+  text-align: left;
+  padding: 2px 15px;
+}
+.menu li button:hover {
+  color: black;
+}
+.menu li:hover {
+  background-color: silver;
+}

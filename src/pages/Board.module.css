@@ -19,6 +19,13 @@
     color: #555555;
     background-color: #cccccc;
 }
+.smallBtn {
+    padding: 2px 10px;
+    font-size: 0.8em;
+}
+.pullRight {
+    float: right;
+}
 
 .tabs {
     border-bottom: 1px solid silver;

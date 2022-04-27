@@ -1,7 +1,8 @@
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useState } from "react";
 import { useDrop } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { stonesActions } from "../../store/stones-slice";
+import ContextMenu from "../UI/ContextMenu";
 import DoublesMarkings from "./DoublesMarkings";
 
 import Stone from "./Stone";
@@ -45,6 +46,17 @@ const Sheet = (props) => {
     const viewBox = `${-sheet.width/2} ${minY} ${sheet.width} ${ sheet.backgap + 183 + 640 + sheet.frontgap }`;
     console.log('ViewBox: '+ viewBox);
 
+    const [showContext, setShowContext] = useState(null);
+    const toggleContextMenuHandler = (event, stone) => {
+      event.preventDefault();
+      setShowContext({event, stone});
+    };
+    const closeContextMenu = (event) => {
+      event.preventDefault();
+      setShowContext(null);
+    }
+    
+
     return (<div ref={svgRef} style={{marginRight: '2em'}}>
         <svg ref={drop} viewBox={viewBox} className="sheet-image" style={{border: '1px solid silver', float: 'right'}}
     xmlns="http://www.w3.org/2000/svg">
@@ -79,11 +91,13 @@ const Sheet = (props) => {
     </g> */}
 
     { Object.values(stones).map((stone) => {
-        return <Stone key={ stone.id } stone={stone} containerRef={svgRef} />;
+        return <Stone key={ stone.id } stone={stone} containerRef={svgRef} showContextMenu={toggleContextMenuHandler} />;
     }) }
     { props.children }
 
         Sorry, your browser does not support inline SVG.
-    </svg></div>);
+    </svg>
+    { showContext && <ContextMenu x={showContext.event.clientX} y={showContext.event.clientY} cliH={showContext.event.clientHeight} ev={showContext.event} closeHandler={closeContextMenu} targetEl={showContext.event.target} actions={[]} /> }
+  </div>);
 };
 export default Sheet;
