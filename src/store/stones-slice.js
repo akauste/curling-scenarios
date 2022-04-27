@@ -1,19 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = { direction: 1, stones: {} };
-let posX = 1;
-let posY = 1;
-for(let i=1; i < 9; i++) {
-    //const sideDist = posX*30;
-    const y = -15+30*posY;
 
+for(let i=1; i < 9; i++) {
     initialState.stones['r'+i] = { x: -200+i*16, y: 640+32, id:'r'+i, type: 'stone', visible: true, num: i, team: 1 };
     initialState.stones['y'+i] = { x:  200-i*16, y: 640+32, id:'y'+i, type: 'stone', visible: true, num: i, team: 2 };
-    posX++;
-    if(posX > 4) {
-        posX = 1;
-        posY++;
-    }
 };
 const diameter = 28.8; // The default diameter
 
@@ -123,7 +114,7 @@ export const stonesSlice = createSlice({
     swapDirection: (state) => {
       state.historyBack.push({ direction: state.direction, stones: state.stones});
       state.historyForward = [];
-      
+
       state.direction = -state.direction;
       state.stones = Object.values(state.stones).map(val => ({...val, x: -val.x, y: -val.y}))
     },
