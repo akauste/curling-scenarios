@@ -9,9 +9,8 @@ import ShadowStone from "./ShadowStone";
 
 const Stone = props => {
     const {x, y, id} = props.stone;
-    const colors = [ useSelector(state => state.sheet.team1color), useSelector(state => state.sheet.team2color) ];
     const direction = useSelector(state => state.stones.direction);
-    const color = colors[props.stone.team - 1];
+    const color = useSelector(state => state.sheet[`team${ props.stone.team }color`]);
     const stones = useSelector(state => state.stones.stones);
     const sheetWidth = useSelector(state => state.sheet.width);
     const otherStones = Object.values(stones).filter(s => s.id !== id);
