@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { useDrag } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { stonesActions } from "../../store/stones-slice";
+import ContextMenu from "../UI/ContextMenu";
+import SubMenu from "../UI/SubMenu";
 
 import ShadowStone from "./ShadowStone";
 
@@ -13,6 +16,7 @@ const Stone = props => {
     const sheetWidth = useSelector(state => state.sheet.width);
     const otherStones = Object.values(stones).filter(s => s.id !== id);
     const dispatch = useDispatch();
+    const [ctxMenu ,setCtxMenu] = useState(null);
 
     let clickCount = 0;
     const clickHandler = event => {
@@ -20,7 +24,7 @@ const Stone = props => {
         setTimeout(() => {
           if (clickCount === 1) {
             //console.log('single click: ', count);
-            toggleContextMenu(event);
+            showContextMenu(event);
           } else if (clickCount === 2) {
             //console.log('setTimeout onDoubleClick: ', count);
             createShadow(event);
@@ -29,8 +33,12 @@ const Stone = props => {
       }, 300);
     }
 
-    const toggleContextMenu = event => {
-      props.showContextMenu(event, props.stone);
+    const showContextMenu = event => {
+      event.preventDefault();
+      setCtxMenu({x: event.clientX, y: event.clientY});
+    }
+    const hideContextMenu = event => {
+      setCtxMenu(null);
     }
 
     // Stone must receive the coordinate calculation function based on the sheet config somehow
@@ -39,6 +47,7 @@ const Stone = props => {
     const createShadow = event => {
       event.preventDefault();
       dispatch(stonesActions.addStonePrevPosition({id}));
+      setCtxMenu(null);
     }
 
     const diameter = 28.8;
@@ -133,10 +142,24 @@ const Stone = props => {
 
     const r = getRadius(y);
     return (
-        <g ref={drag} onClick={clickHandler}>
+        <g ref={drag}>
             { props.stone.prevPosition && <ShadowStone currentX={x} currentY={y} stone={props.stone.prevPosition} /> }
-            <circle cx={ x } cy={ y } r={r} stroke="#666666" strokeWidth="1" fill="#999999"></circle>
-            <circle cx={ x } cy={ y } r={r*0.69} stroke="#666666" strokeWidth="0.25" fill={ color }></circle>
+            <g>
+              <circle cx={ x } cy={ y } r={r} stroke="#666666" strokeWidth="1" fill="#999999" onClick={clickHandler}></circle>
+              <circle cx={ x } cy={ y } r={r*0.69} stroke="#666666" strokeWidth="0.25" fill={ color } onClick={clickHandler}></circle>
+              { ctxMenu && <ContextMenu x={ctxMenu.x} y={ctxMenu.y} closeHandler={hideContextMenu}> 
+                  <li><button type="button" onClick={createShadow}>Add previous position shadow</button></li>
+                  <li>
+                    <SubMenu title="Show coordinates and make this really really long ...">
+                      <li><button>X: {ctxMenu.x} ({x})</button></li>
+                      <li><button>Y: {ctxMenu.y} ({y})</button></li>
+                    </SubMenu>
+                  </li>
+                  <li><button>Other action</button></li>
+                  <li><button>Another</button></li>
+                </ContextMenu>
+              }
+            </g>
         </g>
     );
 };
