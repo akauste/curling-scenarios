@@ -22,15 +22,13 @@ const Stone = props => {
     const clickHandler = event => {
       clickCount += 1;
         setTimeout(() => {
-          if (clickCount === 1) {
-            //console.log('single click: ', count);
+          if (clickCount === 1) { // Single click
             showContextMenu(event);
-          } else if (clickCount === 2) {
-            //console.log('setTimeout onDoubleClick: ', count);
+          } else if (clickCount === 2) { // Doubleclick
             createShadow(event);
           }
           clickCount = 0;
-      }, 300);
+      }, 200);
     }
 
     const showContextMenu = event => {
@@ -40,9 +38,6 @@ const Stone = props => {
     const hideContextMenu = event => {
       setCtxMenu(null);
     }
-
-    // Stone must receive the coordinate calculation function based on the sheet config somehow
-    // Stone itself should have position, that is no relative to that, maybe having origo at tee?
     
     const createShadow = event => {
       event.preventDefault();
@@ -150,13 +145,13 @@ const Stone = props => {
               { ctxMenu && <ContextMenu x={ctxMenu.x} y={ctxMenu.y} closeHandler={hideContextMenu}> 
                   <li><button type="button" onClick={createShadow}>Add previous position shadow</button></li>
                   <li>
-                    <SubMenu title="Show coordinates and make this really really long ...">
-                      <li><button>X: {ctxMenu.x} ({x})</button></li>
-                      <li><button>Y: {ctxMenu.y} ({y})</button></li>
+                    <SubMenu title="Show coordinates">
+                      <li><button>screen X: {ctxMenu.x} (sheet x: {x})</button></li>
+                      <li><button>screen Y: {ctxMenu.y} (sheet y: {y})</button></li>
                     </SubMenu>
                   </li>
-                  <li><button>Other action</button></li>
-                  <li><button>Another</button></li>
+                  {/* <li><button>Other action</button></li>
+                  <li><button>Another</button></li> */}
                 </ContextMenu>
               }
             </g>
