@@ -8,7 +8,6 @@ import { stonesActions } from "../store/stones-slice";
 import LocalStorageManager from "../components/scenario/LocalStorageManager";
 
 const Board = () => {
-    const sheetContainerRef = useRef();
     const stones = useSelector(state => state.stones);
     const hasHistoryBack    = useSelector(state => state.stones.historyBack.length);
     const hasHistoryForward = useSelector(state => state.stones.historyForward.length);
@@ -43,7 +42,7 @@ const Board = () => {
         <div className={classes.sheet}>
             { hasHistoryBack ? <button className={classes.smallBtn} onClick={()=>{dispatch(stonesActions.back())}}>Back</button> : null }
             { hasHistoryForward ? <button className={`${classes.smallBtn} ${classes.pullRight}`} onClick={()=>{dispatch(stonesActions.forward())}}>Forward</button> : null }
-            <Sheet containerRef={sheetContainerRef} onMoveStone={moveStoneHandler} />
+            <Sheet />
         </div>
         <div className={classes.config}>
             <p>Tactic board: [Menu] [Conf...]</p>
