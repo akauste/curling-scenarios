@@ -1,6 +1,7 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { sheetActions } from "../../store/sheet-slice";
+import ColorSelector from "../UI/ColorSelector";
 
 const ConfigureSheet = () => {
   const dispatch = useDispatch(sheetActions);
@@ -61,18 +62,12 @@ const ConfigureSheet = () => {
           <option value={40}>40 cm</option>
         </select>
       </div>
-      <div className="field">
-        <label>First stone color:</label>
-        <select defaultValue={sheet.team1color} ref={team1colorRef}>
-          <option value='red'>Red</option>
-          <option value='yellow'>Yellow</option>
-          <option value='blue'>Blue</option>
-          <option value='green'>Green</option>
-          <option value='black'>Black</option>
-          <option value='white'>White</option>
-        </select>
-      </div>
-      <div className="field">
+      <ColorSelector label="First stone color" value={sheet.team1color} ref={team1colorRef} />
+      <ColorSelector label="Second stone color" value={sheet.team2color} ref={team2colorRef} />
+      <ColorSelector label="12-foot ring color" value={sheet.ring12color} ref={ring12colorRef} />
+      <ColorSelector label="4-foot ring color" value={sheet.ring4color} ref={ring4colorRef} />
+      
+      {/* <div className="field">
         <label>Second stone color:</label>
         <select defaultValue={sheet.team2color} ref={team2colorRef}>
           <option value='red'>Red</option>
@@ -82,9 +77,9 @@ const ConfigureSheet = () => {
           <option value='black'>Black</option>
           <option value='white'>White</option>
         </select>
-      </div>
-      <div className="field">
-        <label>12-foot ring color:</label>
+      </div> */}
+      {/* <div className="field"> */}
+        {/* <label>12-foot ring color:</label>
         <select defaultValue={sheet.ring12color} ref={ring12colorRef}>
           <option value='red'>Red</option>
           <option value='yellow'>Yellow</option>
@@ -108,7 +103,7 @@ const ConfigureSheet = () => {
           <option value='silver'>Silver</option>
           <option value='white'>White</option>
         </select>
-      </div>
+      </div> */}
       <button type="submit">Use</button>
       <button type="button" onClick={saveHandler}>Save</button>
     </form>
