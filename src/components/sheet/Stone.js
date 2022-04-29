@@ -11,15 +11,13 @@ const Stone = props => {
     const {x, y, id} = props.stone;
     const {direction, stones} = useSelector(state => state.stones);
     const color = useSelector(state => state.sheet[`team${ props.stone.team }color`]);
-    //const stones = useSelector(state => state.stones.stones);
-    //const sheetWidth = useSelector(state => state.sheet.width);
     const otherStones = Object.values(stones).filter(s => s.id !== id);
     const dispatch = useDispatch();
     const [ctxMenu ,setCtxMenu] = useState(null);
 
     let clickCount = 0;
     const clickHandler = event => {
-      clickCount++; // += 1;
+      clickCount++;
       setTimeout(() => {
         if (clickCount === 1) { // Single click
           showContextMenu(event);
