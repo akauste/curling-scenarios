@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { direction: 1, stones: {} };
+const initialState = { direction: 1, stones: [] };
 
 for(let i=1; i < 9; i++) {
-    initialState.stones['r'+i] = { x: -200+i*16, y: 640+32, id:'r'+i, type: 'stone', visible: true, num: i, team: 1 };
-    initialState.stones['y'+i] = { x:  200-i*16, y: 640+32, id:'y'+i, type: 'stone', visible: true, num: i, team: 2 };
+  initialState.stones.push({ x: -200+i*16, y: 640+32, id:'r'+i, type: 'stone', visible: true, num: i, team: 1 });
+}
+for(let i=1; i < 9; i++) {
+  initialState.stones.push({ x:  200-i*16, y: 640+32, id:'y'+i, type: 'stone', visible: true, num: i, team: 2 });
 };
 const diameter = 28.8; // The default diameter
 
