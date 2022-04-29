@@ -136,7 +136,7 @@ const Stone = props => {
     return (
         <g ref={drag}>
             { props.stone.prevPosition && <ShadowStone currentX={x} currentY={y} stone={props.stone.prevPosition} /> }
-            <g>
+            <g data-testid={`stone-${id}`}>
               <circle cx={ x } cy={ y } r={r} stroke="#666666" strokeWidth="1" fill="#999999" onClick={clickHandler}></circle>
               <circle cx={ x } cy={ y } r={r*0.69} stroke="#666666" strokeWidth="0.25" fill={ color } onClick={clickHandler}></circle>
               { ctxMenu && <ContextMenu x={ctxMenu.x} y={ctxMenu.y} closeHandler={hideContextMenu}> 

@@ -15,13 +15,6 @@ const Sheet = (props) => {
     
     const svgRef = useRef();
 
-    const moveStone = useCallback(
-      (id, x, y) => {
-        onMoveStone(id, x, y);
-      },
-      [onMoveStone]
-    );
-
     const getScale = () => (sheet.width / svgRef.current.clientWidth);
 
     const [, drop] = useDrop(
@@ -37,7 +30,7 @@ const Sheet = (props) => {
             return undefined;
           }
         }),
-        [moveStone]
+        [stonesActions.moveStone]
     );
 
     const minY = direction === 1 ? -(sheet.backgap+183) : -(640 + sheet.frontgap);
