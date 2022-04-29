@@ -12,7 +12,19 @@ code {
     monospace;
 }
 
-.field {
+.fieldset {
+  border: 0px dotted pink;
+  margin: 0;
+  padding: 0;
+}
+
+.fieldset legend {
+  font-weight: bold;
+  padding: 0.25rem 0;
+  margin-left: 0;
+}
+
+/* .field {
   display: table-row;
   padding: 0.3em;
 }
@@ -26,6 +38,26 @@ code {
 .field select {
   display: table-cell;
   width: 100%;
+  text-align: left;
+} */
+
+.field {
+  display: flex;
+  padding: 0.3rem;
+}
+.field label {
+  /* display: table-cell; */
+  min-width: 10em;
+  max-width: 15em;
+  width: 100%;
+  text-align:right;
+  padding: 0.3em;
+}
+.field input,
+.field select {
+  /* display: table-cell; */
+  width: 100%;
+  min-width: 10em;
   text-align: left;
 }
 
