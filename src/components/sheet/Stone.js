@@ -9,24 +9,24 @@ import ShadowStone from "./ShadowStone";
 
 const Stone = props => {
     const {x, y, id} = props.stone;
-    const direction = useSelector(state => state.stones.direction);
+    const {direction, stones} = useSelector(state => state.stones);
     const color = useSelector(state => state.sheet[`team${ props.stone.team }color`]);
-    const stones = useSelector(state => state.stones.stones);
-    const sheetWidth = useSelector(state => state.sheet.width);
+    //const stones = useSelector(state => state.stones.stones);
+    //const sheetWidth = useSelector(state => state.sheet.width);
     const otherStones = Object.values(stones).filter(s => s.id !== id);
     const dispatch = useDispatch();
     const [ctxMenu ,setCtxMenu] = useState(null);
 
     let clickCount = 0;
     const clickHandler = event => {
-      clickCount += 1;
-        setTimeout(() => {
-          if (clickCount === 1) { // Single click
-            showContextMenu(event);
-          } else if (clickCount === 2) { // Doubleclick
-            createShadow(event);
-          }
-          clickCount = 0;
+      clickCount++; // += 1;
+      setTimeout(() => {
+        if (clickCount === 1) { // Single click
+          showContextMenu(event);
+        } else if (clickCount === 2) { // Doubleclick
+          createShadow(event);
+        }
+        clickCount = 0;
       }, 200);
     }
 
@@ -35,6 +35,7 @@ const Stone = props => {
       setCtxMenu({x: event.clientX, y: event.clientY});
     }
     const hideContextMenu = event => {
+      event.preventDefault();
       setCtxMenu(null);
     }
     
@@ -82,7 +83,7 @@ const Stone = props => {
       );
 
       if (isDragging) { //  && hideSourceOnDrag
-        const scale = sheetWidth / props.containerRef.current.clientWidth;
+        const scale = props.getScale(); //sheetWidth / props.containerRef.current.clientWidth;
         const dragStartX = props.stone.prevPosition ? props.stone.prevPosition.x : x;
         const dragStartY = props.stone.prevPosition ? props.stone.prevPosition.y : y;
         if(!diff) return <div />;
@@ -107,7 +108,6 @@ const Stone = props => {
 
         return (
           <g>
-            {newY < 30 && <rect width={sheetWidth} height={30} fill='none' stroke='silver' strokeWidth={0.5} /> }
             {diff && (
               <line
                 x1={dragStartX} x2={newX}

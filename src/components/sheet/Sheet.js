@@ -22,17 +22,16 @@ const Sheet = (props) => {
       [onMoveStone]
     );
 
+    const getScale = () => (sheet.width / svgRef.current.clientWidth);
+
     const [, drop] = useDrop(
         () => ({
           accept: 'stone',
           drop(item, monitor) {
             const delta = monitor.getDifferenceFromInitialOffset();
-            let x = Math.round(
-              item.stone.x + delta.x * (sheet.width / svgRef.current.clientWidth)
-            );
-            let y = Math.round(
-              item.stone.y + delta.y * (sheet.width / svgRef.current.clientWidth)
-            );
+            const scale = getScale();
+            let x = Math.round( item.stone.x + delta.x * scale );
+            let y = Math.round( item.stone.y + delta.y * scale );
             
             dispatch(stonesActions.moveStone({id: item.stone.id, x, y}));
             return undefined;
@@ -79,7 +78,7 @@ const Sheet = (props) => {
     </g> */}
 
     { Object.values(stones).map((stone) => {
-        return <Stone key={ stone.id } stone={stone} containerRef={svgRef} />;
+        return <Stone key={ stone.id } stone={stone} getScale={getScale} />;
     }) }
     { props.children }
 
