@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { direction: 1, stones: [] };
+const initialState = { 
+  direction: 1, 
+  stones: [],
+  historyBack: [],
+  historyForward: []
+};
 
 for(let i=1; i < 9; i++) {
   initialState.stones.push({ x: -200+i*16, y: 640+32, id:'r'+i, type: 'stone', visible: true, num: i, team: 1 });
@@ -39,7 +44,7 @@ export const clearOverlaps = (x,y, other) => {
 
 export const stonesSlice = createSlice({
   name: 'stones',
-  initialState: {...initialState, historyBack: [], historyForward: []},
+  initialState,
   reducers: {
     moveStone: (state, action) => {
       const {id, x, y} = action.payload;
@@ -47,7 +52,7 @@ export const stonesSlice = createSlice({
       state.historyBack.push({ direction: state.direction, stones: state.stones});
       state.historyForward = [];
 
-      state.stones = Object.values(state.stones).map(val => ({ ...val }));
+      //state.stones = state.stones.map(val => ({ ...val }));
       const stone = state.stones.find(s => s.id === id);
       stone.x = x;
       stone.y = y;
