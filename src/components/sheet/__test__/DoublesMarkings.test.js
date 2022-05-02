@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import DoublesMarkings from './DoublesMarkings';
+import DoublesMarkings from '../DoublesMarkings';
 
 describe('<DoublesMarkings direction="1" />', () => {
   test('renders doubles markings', () => {
