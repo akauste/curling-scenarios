@@ -7,7 +7,6 @@ import DoublesMarkings from "./DoublesMarkings";
 import Stone from "./Stone";
 
 const Sheet = (props) => {
-    const { onMoveStone } = props;
     const stones = useSelector(state => state.stones.stones);
     const direction = useSelector(state => state.stones.direction);
     const sheet = useSelector(state => state.sheet);
@@ -37,7 +36,7 @@ const Sheet = (props) => {
     const viewBox = `${-sheet.width/2} ${minY} ${sheet.width} ${ sheet.backgap + 183 + 640 + sheet.frontgap }`;
     console.log('ViewBox: '+ viewBox);
 
-    return (<div ref={svgRef} style={{marginRight: '2em'}}>
+    return (<div ref={svgRef}>
         <svg ref={drop} viewBox={viewBox} className="sheet-image" style={{border: '1px solid silver', float: 'right'}}
     xmlns="http://www.w3.org/2000/svg">
     <g id="sheet">
@@ -77,7 +76,6 @@ const Sheet = (props) => {
 
         Sorry, your browser does not support inline SVG.
     </svg>
-    {/* { showContext && <ContextMenu x={showContext.event.clientX} y={showContext.event.clientY} closeHandler={closeContextMenu} actions={showContext.actions} /> } */}
   </div>);
 };
 export default Sheet;
