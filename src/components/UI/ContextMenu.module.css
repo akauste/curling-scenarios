@@ -8,6 +8,28 @@
   opacity: 0.01;
 }
 
+.overlay {
+  position: absolute;
+  top: 50vh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: auto;
+  padding: 1rem;
+  min-width: 25em;
+  max-width: 90%;
+  min-height: 20vh;
+  max-height: 90vh;
+  border: 1px solid gray;
+  border-radius: 0.5rem;
+  background-color: white;
+}
+.overlay h2.header {
+  background-color: navy;
+  color: white;
+  margin: 0;
+  padding: 0.2rem;
+}
+
 .invisibleBackdrop {
   position: absolute; 
   top: 0;
