@@ -47,17 +47,19 @@ code {
 }
 .field label {
   /* display: table-cell; */
-  min-width: 10em;
-  max-width: 15em;
+  min-width: 5em;
+  max-width: 10em;
   width: 100%;
   text-align:right;
   padding: 0.3em;
 }
 .field input,
-.field select {
+.field select,
+.field .controls {
   /* display: table-cell; */
   width: 100%;
   min-width: 10em;
+  max-width: 25em;
   text-align: left;
 }
 
