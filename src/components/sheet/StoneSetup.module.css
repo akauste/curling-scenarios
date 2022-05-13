@@ -30,6 +30,11 @@ button {
   color: white;
   background-color: gray;
 }
+.btnPrimary {
+  color: white;
+  background-color: green;
+}
+
 .activeBtn {
   color: white;
   background-color: #3377ff;
