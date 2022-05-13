@@ -1,18 +1,68 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initStones = (direction, mode) => {
+  const stones = [];
+  const maxStone = mode === 4 ? 8 : 6;
+  for(let i=1; i <= maxStone; i++) {
+    stones.push({ x: -direction*(200-i*16), y: direction*(640+32), id:'r'+i, type: 'stone', visible: true, num: i, team: 1 });
+  }
+  for(let i=1; i <= maxStone; i++) {
+    stones.push({ x:  direction*(200-i*16), y: direction*(640+32), id:'y'+i, type: 'stone', visible: true, num: i, team: 2 });
+  };
+  return stones;
+}
+
 const initialState = { 
   direction: 1, 
-  stones: [],
+  hammer: 'red',
+  gameMode: 4,
+  powerPlay: null,
+  rockPosition: null,
+  stones: initStones(1, 4),
   historyBack: [],
   historyForward: []
 };
 
-for(let i=1; i < 9; i++) {
-  initialState.stones.push({ x: -200+i*16, y: 640+32, id:'r'+i, type: 'stone', visible: true, num: i, team: 1 });
-}
-for(let i=1; i < 9; i++) {
-  initialState.stones.push({ x:  200-i*16, y: 640+32, id:'y'+i, type: 'stone', visible: true, num: i, team: 2 });
+const houseRockX = powerPlay => (122*powerPlay);
+const guardRockX = (powerPlay,rockPosition) => {
+  switch(rockPosition) {
+      case 1: 
+      case 2:
+          return powerPlay * 109;
+      case 3:
+      case 4:
+          return powerPlay * 107;
+      case 5:
+      case 6:
+      default:
+          return powerPlay * 104;
+  }
 };
+const houseRockY = powerPlay => powerPlay ? 15 : +15-61;
+const guardRockY = rockPosition => {
+  const midpointY = 183+228.6;
+  switch(rockPosition) {
+    case 1: return midpointY-91.4-15;
+    case 2: return midpointY-91.4+15;
+    case 3: return midpointY-15;
+    case 4: return midpointY+15;
+    case 5: return midpointY+91.4-15;
+    default: return midpointY+91.4+15;
+  }
+};
+
+const move = (set, id, x, y) => {
+  const stone = set.find(s => s.id === id);
+  stone.x = x;
+  stone.y = y;
+};
+
+const presetStones = (stones, hammer, direction, powerPlay, rockPosition) => {
+  const [houseRock, guardRock] = hammer === 'red' ? ['r6', 'y6'] : ['y6', 'r6'];
+  move(stones, houseRock, houseRockX(powerPlay), direction*houseRockY(powerPlay));
+  move(stones, guardRock, guardRockX(powerPlay, rockPosition), direction*guardRockY(rockPosition));
+};
+
 const diameter = 28.8; // The default diameter
 
 const isOverlap = (x1, y1, x2, y2) => {
@@ -111,6 +161,30 @@ export const stonesSlice = createSlice({
         current = current.prevPosition;
       }
     },
+    initialize: (state, action) => {
+      const payload = action.payload;
+      state.direction = payload.direction;
+      state.hammer = payload.hammer;
+      state.gameMode = payload.gameMode;
+      if(payload.stones) {
+        state.stones = payload.stones; // Allows loading from db
+      }
+      else {
+        state.stones = initStones(payload.direction, payload.gameMode);
+      }
+      if(state.gameMode === 2) {
+        state.powerPlay = payload.powerPlay;
+        state.rockPosition = payload.rockPosition;
+        if(!payload.stones) {
+          // Done only, when we didn't get the full set already setup
+          presetStones(state.stones, payload.hammer, payload.direction, payload.powerPlay, payload.rockPosition);
+        }
+      }
+      else {
+        state.powerPlay = null;
+        state.rockPosition = null;
+      }
+    },
     reset: (state) => {
       state.historyBack.push({ direction: state.direction, stones: state.stones});
       state.historyForward = [];
@@ -136,7 +210,11 @@ export const stonesSlice = createSlice({
       state.historyForward = [];
 
       state.direction = -state.direction;
-      state.stones = Object.values(state.stones).map(val => ({...val, x: -val.x, y: -val.y}))
+      const swapStone = (stone) => {
+        const prevPos = stone.prevPosition ? swapStone(stone.prevPosition) : null;
+        return {...stone, x: -stone.x, y: -stone.y, prevPosition: prevPos};
+      };
+      state.stones = state.stones.map(val => swapStone(val));
     },
     back: (state) => {
       if(state.historyBack.length) {
