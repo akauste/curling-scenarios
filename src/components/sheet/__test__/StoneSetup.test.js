@@ -62,6 +62,54 @@ describe('<StoneSetup />', () => {
     });
   });
 
+  describe('hammer buttons', () => {
+    test('Set hammer to red', () => {
+      const onClose = jest.fn(e => e.preventDefault());
+      render(<StoneSetup onClose={onClose} />, {wrapper: Providers});
+
+      fireEvent.click(screen.getByRole('button', {name: 'red'}));
+      expect(screen.getByRole('button', {name: 'red'})).toHaveClass('activeBtn');
+      expect(screen.getByRole('button', {name: 'yellow'})).not.toHaveClass('activeBtn');
+      //expect(store.getState()['stones'].hammer).toBe('red');
+    });
+
+    test('Set hammer to yellow', () => {
+      const onClose = jest.fn(e => e.preventDefault());
+      render(<StoneSetup onClose={onClose} />, {wrapper: Providers});
+
+      fireEvent.click(screen.getByRole('button', {name: 'yellow'}));
+      expect(screen.getByRole('button', {name: 'red'})).not.toHaveClass('activeBtn');
+      expect(screen.getByRole('button', {name: 'yellow'})).toHaveClass('activeBtn');
+      //expect(store.getState()['stones'].hammer).toBe('yellow');
+    });
+  });
+
+  describe('gameMode buttons', () => {
+    test('doubles should display additional buttons', () => {
+      const onClose = jest.fn(e => e.preventDefault());
+      render(<StoneSetup onClose={onClose} />, {wrapper: Providers});
+
+      // Check that the buttons are hidden before:
+      expect(screen.queryByText(/Left/)).toBeNull();
+
+      fireEvent.click(screen.getByText(/doubles/));
+      expect(screen.getByText(/Left/)).toBeVisible();
+    });
+
+    test('4 person game should remove additional buttons', () => {
+      const onClose = jest.fn(e => e.preventDefault());
+      render(<StoneSetup onClose={onClose} />, {wrapper: Providers});
+
+      fireEvent.click(screen.getByText(/doubles/)); // First to doubles, so that clicking back to 4 will be checked
+      expect(screen.getByText(/Left/)).toBeVisible();
+
+      fireEvent.click(screen.getByText(/4 person/));
+
+      // Check that the buttons are hidden before:
+      expect(screen.queryByText(/Left/)).toBeNull();
+    });
+  });
+
   describe('powerplay buttons', () => {
     let btnLeft;
     let btnCenter;
