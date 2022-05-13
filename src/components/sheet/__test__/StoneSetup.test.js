@@ -1,8 +1,5 @@
-//import { userEvent } from "@testing-library/user-event";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import StoneSetup from "../StoneSetup";
-//import { jest } from '@jest/core';
-//import { stonesActions } from '../../../store/stones-slice';
 import store from "../../../store";
 import { Provider } from "react-redux";
 
@@ -27,26 +24,21 @@ const Providers = ({children}) => {
 }
 
 describe('<StoneSetup />', () => {
-  // test.afterEach(cleanup);
-  // const initSpy = jest.spyOn(stonesActions, 'initialize');
-
   describe('data updates', () => {
     test('should call stonesActions with defaults, when save is clicked', () => {
-      // const initSpy = jest.spyOn(stonesActions, 'initialize');
       const onClose = jest.fn(e => e.preventDefault());
 
       render(<StoneSetup onClose={onClose} />, {wrapper: Providers});
       fireEvent.click(screen.getByText('Submit'));
-      // expect(initSpy).toBeCalledTimes(1);
-      // expect(initSpy.mock.calls[0][0]).toEqual({direction: 1, hammer: 'red', gameMode: 4, rockPosition: 2, powerPlay: 0});
+      expect(store.getState()['stones'].direction).toBe(1);
+      expect(store.getState()['stones'].hammer).toBe('red');
+      expect(store.getState()['stones'].gameMode).toBe(4);
       expect(onClose).toBeCalledTimes(1);
       jest.clearAllMocks();
     });
 
     test('should call stonesActions with clicked values, when save is clicked', async () => {
-      // const initSpy = jest.spyOn(stonesActions, 'initialize');
       const onClose = jest.fn(e => e.preventDefault());
-      //const user = userEvent.setup();
       render(<StoneSetup onClose={onClose} />, {wrapper: Providers});
 
       fireEvent.click(screen.getByText('Swap'));
@@ -65,7 +57,7 @@ describe('<StoneSetup />', () => {
       expect(store.getState()['stones'].gameMode).toBe(2);
       expect(store.getState()['stones'].rockPosition).toBe(1);
       expect(store.getState()['stones'].powerPlay).toBe(-1);
-      //expect(onClose).toBeCalledTimes(1);
+      expect(onClose).toBeCalledTimes(1);
       jest.clearAllMocks();
     });
   });
@@ -123,6 +115,7 @@ describe('<StoneSetup />', () => {
         fireEvent.click(btn);
         buttons.forEach(checkBtn => {
           if(checkBtn !== btn) {
+            // eslint-disable-next-line jest/no-conditional-expect
             expect(checkBtn).not.toHaveClass('activeBtn');
           }
         });
