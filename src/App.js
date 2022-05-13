@@ -19,6 +19,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/board" element={<Board />} />
+          <Route path="/board/:id" element={<Board />} />
           <Route path="/login" element={<Login />} />
           { user && <Route path="/profile" element={<Profile />} /> }
           <Route path="*" element={<p>404 Page not found</p>} />
