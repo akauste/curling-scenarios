@@ -147,6 +147,10 @@ export const stonesSlice = createSlice({
     },
     addStonePrevPosition: (state, action) => {
       const {id} = action.payload;
+
+      state.historyBack.push({ direction: state.direction, stones: state.stones});
+      state.historyForward = [];
+
       state.stones = Object.values(state.stones).map(val => val.id === id ? { ...val, prevPosition: { ...val }} : { ...val });
     },
     removeStonePrevPosition: (state, action) => {
