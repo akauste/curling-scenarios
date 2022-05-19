@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import Sheet from "../components/sheet/Sheet";
@@ -13,12 +13,12 @@ import SheetHistory from "../components/sheet/SheetHistory";
 
 const Board = () => {
     let params = useParams();
-    //const stones = useSelector(state => state.stones);
     const sheet  = useSelector(state => state.sheet);
     const dispatch = useDispatch();
     const [tab, setTab] = useState('comment');
     const [scene, setScene] = useState();
     const [status, setStatus] = useState();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const loadScenario = async (id) => {
@@ -63,7 +63,7 @@ const Board = () => {
 
     return (<>
         <div className={classes.sheet} style={{marginRight: '2rem'}}>
-            <SheetHistory />
+            <SheetHistory onInitStones={() => navigate('/board')} />
             <Sheet />
         </div>
         <div className={classes.config}>
