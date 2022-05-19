@@ -13,7 +13,7 @@ code {
 }
 
 button {
-  color: white;
+  color: black;
   border: 0px solid gray;
   border-radius: 0.6em;
   padding: 0.5em 1em;
@@ -21,7 +21,11 @@ button {
 }
 
 .btnPrimary {
+  color: white;
   background-color: rgb(11, 71, 184);
+}
+.btnPrimary:hover {
+  opacity: 0.8;
 }
 
 .fieldset {
@@ -65,14 +69,54 @@ button {
   text-align:right;
   padding: 0.3em;
 }
-.field input,
-.field select,
+/*.field input,
+.field select,*/
 .field .controls {
   /* display: table-cell; */
   width: 100%;
   min-width: 10em;
   max-width: 25em;
   text-align: left;
+}
+
+.input-group {
+  border: 1px solid gray;
+  border-radius: 3px;
+  width: 100%;      
+}
+
+.input-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+.input-group > * {
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+.input-group > input {
+  flex-shrink: 1;
+  flex-grow: 1;
+  flex-basis: 0;
+  min-width: 0;
+}
+
+.input-group > * {
+  margin: 0;
+  border-radius: 0;
+  padding: 0.2rem 0.3rem;
+  border: 0;
+  border-left: 1px solid silver;
+}
+
+.input-group > *:last-child {
+  border-top-right-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+.input-group *:first-child {
+  border-left: 0px;
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
 }
 
 .sheet-image {

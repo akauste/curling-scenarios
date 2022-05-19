@@ -87,11 +87,10 @@ const Situation = props => {
     { status === 'saving' && <p>spinner - Saving...</p> }
     { status === 'saved' && <p>Saved</p> }
     { status === 'error' && <p>Saving failed</p> }
-    { id && <Field label="ID">{ id }</Field> }
-    <div className="field">
-      <label>Title</label>
+    { id && <Field label="ID"><p>{ id }</p></Field> }
+    <Field label="Title">
       <input type="text" placeholder="Give a title for the situation" value={title} onChange={event => setTitle(event.target.value)} required />
-    </div>
+    </Field>
     <Field label="We are">
       <select value={weAre} onChange={event=>setWeAre(event.target.value)} style={{width: '5em'}}>
         <option>{ team1 }</option>
@@ -104,30 +103,32 @@ const Situation = props => {
     </Field>
     <Field label="End #" id="end">
       { end === null && <>undefined <button type="button" onClick={event=>setEnd(1)}>Set</button></> }
-      { end !== null && <><input id="end" value={end} onChange={event=>setEnd(+event.target.value)} type="number" min={0} max={12} />
-      <button type="button" onClick={event=>setEnd(null)}>Clear</button></> }
+      { end !== null && <span className="input-group"><input id="end" value={end} onChange={event=>setEnd(+event.target.value)} type="number" min={0} max={12} />
+      <button type="button" onClick={event=>setEnd(null)}>Clear</button></span> }
     </Field>
     <Field label="Game length" id="gamelen">
       <input id="gamelen" ref={gameLengthRef} type="number" defaultValue={8} min={1} max={10} />
     </Field>
     <Field label="Score difference" id="score">
-      <div className="input-group">
-        { end === 1 && 'is even in the first end' }
-        { end !== 1 && (<>
-        <input id="score" value={score} onChange={event=>setScore(event.target.value)} type="number" defaultValue={8} /> { score > 0 ? ' for us' : ' points down' } </>)}
-      </div>
+      { end === 1 && 'is even in the first end' }
+      { end !== 1 && (
+        <div className="input-group">
+          <input id="score" value={score} onChange={event=>setScore(event.target.value)} type="number" defaultValue={0} />
+          <span style={{width: '7em'}}>{ score > 0 ? ' for us' : score === 0 ? 'even' : ' points down' }</span>
+        </div>)
+      }
     </Field>
-    <div className="field">
-      <label>Comments</label>
+    <Field label="Comments">
       <textarea rows={5} ref={commentRef} />
-    </div>
-    <div className="field">
-      <label>Add photo</label>
+    </Field>
+    <Field label="Add photo">
       <input type="file" />
-    </div>
-    <button type="button" onClick={saveToServer}>Save</button>
-    <button type="button" onClick={localSaveHandler}>Save locally</button>
-    { id && <button type="button" onClick={deleteFromServer}>Delete</button> }
+    </Field>
+    <Field>
+      <button type="button" className="btnPrimary" onClick={saveToServer}>Save</button>
+      <button type="button" onClick={localSaveHandler}>Save locally</button>
+      { id && <button type="button" onClick={deleteFromServer}>Delete</button> }
+    </Field>
   </form>);
 };
 export default Situation;
