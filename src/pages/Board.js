@@ -1,23 +1,20 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import Sheet from "../components/sheet/Sheet";
 import classes from './Board.module.css';
 import ConfigureSheet from "../components/sheet/ConfigureSheet";
-import StoneSetup from "../components/sheet/StoneSetup";
 
 import { stonesActions } from "../store/stones-slice";
 import LocalStorageManager from "../components/scenario/LocalStorageManager";
-import Overlay from "../components/UI/Overlay";
 import Situation from "../components/scenario/Situation";
+import SheetHistory from "../components/sheet/SheetHistory";
 
 const Board = () => {
     let params = useParams();
-    const stones = useSelector(state => state.stones);
-    const hasHistoryBack    = useSelector(state => state.stones.historyBack.length);
-    const hasHistoryForward = useSelector(state => state.stones.historyForward.length);
-    const sheet             = useSelector(state => state.sheet);
+    //const stones = useSelector(state => state.stones);
+    const sheet  = useSelector(state => state.sheet);
     const dispatch = useDispatch();
     const [tab, setTab] = useState('comment');
     const [scene, setScene] = useState();
@@ -51,42 +48,22 @@ const Board = () => {
         }
     }, [dispatch, params]);
 
-    const moveStoneHandler = useCallback((id, x, y) => {
+    /*const moveStoneHandler = useCallback((id, x, y) => {
         console.log('Moving: '+ id + ' to : ', x ,y);
         dispatch(stonesActions.moveStone({id, x, y}));
-    }, [dispatch]);
+    }, [dispatch]);*/
 
     const switchTab = (event, tab) => {
         event.preventDefault();
         setTab(tab);
     }
 
-    const [overlay, setOverlay] = useState(null);
-    const closeOverlay = event => {
-        event.preventDefault();
-        setOverlay(null);
-    }
-
     if(status === 'loading')
         return <p>Loading...</p>;
 
-    const setInitialSheet = () => {
-        setOverlay(<Overlay title={'Initialize tactic board'} closeHandler={closeOverlay}>
-            <StoneSetup onClose={closeOverlay} stones={stones} updateStones="{updateStones}" moveStoneHandler={moveStoneHandler} />
-        </Overlay>);
-    }
-
     return (<>
-        { overlay || null }
         <div className={classes.sheet} style={{marginRight: '2rem'}}>
-            <div>
-                <button className={classes.smallBtn} onClick={setInitialSheet}>New...</button>
-                <button className={classes.smallBtn} onClick={() => {dispatch(stonesActions.swapDirection())}}>Swap &#8693;</button>
-                <span style={{ float: "right" }}>
-                { hasHistoryBack ? <button className={classes.smallBtn} onClick={()=>{dispatch(stonesActions.back())}}>Back</button> : null }
-                { hasHistoryForward ? <button className={`${classes.smallBtn} ${classes.pullRight}`} onClick={()=>{dispatch(stonesActions.forward())}}>Forward</button> : null }
-                </span>
-            </div>
+            <SheetHistory />
             <Sheet />
         </div>
         <div className={classes.config}>
