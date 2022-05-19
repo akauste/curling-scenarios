@@ -90,7 +90,6 @@ const Board = () => {
             <Sheet />
         </div>
         <div className={classes.config}>
-            <p>Tactic board: [Menu] [Conf...]</p>
             <ul className={classes.tabs}>
                 <li><button onClick={event => switchTab(event, 'comment')} className={ tab === 'comment' ? classes.active : '' }>Comments</button></li>
                 <li><button onClick={event => switchTab(event, 'conf')} className={ tab === 'conf' ? classes.active : '' }>Configure sheet</button></li>
