@@ -5,7 +5,7 @@ import Overlay from "../UI/Overlay";
 import classes from './SheetHistory.module.css';
 import StoneSetup from "./StoneSetup";
 
-const SheetHistory = () => {
+const SheetHistory = props => {
   const hasHistoryBack    = useSelector(state => state.stones.historyBack.length);
   const hasHistoryForward = useSelector(state => state.stones.historyForward.length);
 
@@ -19,7 +19,7 @@ const SheetHistory = () => {
 
   const setInitialSheet = () => {
     setOverlay(<Overlay title={'Initialize tactic board'} closeHandler={closeOverlay}>
-        <StoneSetup onClose={closeOverlay} />
+        <StoneSetup onClose={closeOverlay} onInitStones={props.onInitStones} />
     </Overlay>);
   };
 

@@ -30,6 +30,7 @@ const StoneSetup = (props) => {
       powerPlay,
     }));
     props.onClose(event);
+    props.onInitStones({direction, hammer, gameMode, rockPosition, powerPlay, id: null});
   }
 
   return (<>
