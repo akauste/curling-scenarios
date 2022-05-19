@@ -1,13 +1,14 @@
 import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { apiCall } from "../../lib/api";
 import Field from "../UI/Field";
 
 const Situation = props => {
   const {team1, team2} = props;
   const [id, setId] = useState(props.init?.id || '');
-  //const titleRef = useRef();
   const [title, setTitle] = useState(props.init?.title || '');
-  const [weAre, setWeAre] = useState(team1);
+  const [weAre, setWeAre] = useState(props.init?.weAre || team1);
+  const [hammer, setHammer] = useState(props.init?.hammer || team1);
   const [end, setEnd] = useState(props.init?.end || 1);
   const gameLengthRef = useRef();
   const [score, setScore] = useState(props.init?.score || '');
@@ -24,30 +25,29 @@ const Situation = props => {
   const saveToServer = async () => {
     console.log('Saving to server');
     setStatus('saving');
-    const method = id ? 'PATCH' : 'PUT';
+    let apiPath = '/scenario';
+    let method = 'PUT';
+    if(id) {
+      apiPath += '/' + id;
+      method = 'PATCH';
+    }
 
-    const res = await fetch('http://localhost:3001/scenario', {
-        method: method,
-        mode: 'cors',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            id: id,
-            title: title, // titleRef.current.value,
-            end: end,
-            format: stones.gameMode,
-            ends_left: endsRemaining(),
-            score_diff: score,
-            owner: null,
-            data: {
-                 direction: stones.direction,
-                 stones: stones.stones,
-                 sheet: sheet
-            }
-        })
+    const {res, data} = await apiCall(apiPath, method, {
+      title: title, // titleRef.current.value,
+      end: end,
+      format: stones.gameMode,
+      ends_remaining: endsRemaining(),
+      score_diff: +score,
+      owner: null,
+      data: {
+        direction: stones.direction,
+        stones: stones.stones,
+        sheet: sheet
+      }
     });
+
     if(res.ok) {
-        setStatus('saved');
-        const data = await res.json();
+        setStatus('Saved with id: '+ data.id);
         console.log(data);
         setId(data.id);
     }
@@ -99,7 +99,7 @@ const Situation = props => {
       { weAre === stones.hammer ? <i>and we have the hammer</i> : <b>and we don't have hammer</b> }
     </Field>
     <Field label="Hammer">
-      { stones.hammer }
+      <p>{ hammer }</p>
     </Field>
     <Field label="End #" id="end">
       { end === null && <>undefined <button type="button" onClick={event=>setEnd(1)}>Set</button></> }
