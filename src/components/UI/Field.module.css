@@ -1,0 +1,41 @@
+.field {
+  display: flex;
+  padding: 0.3rem;
+}
+.field > * {
+  margin: 0;
+  padding: 0.2rem 1rem;
+}
+.field label {
+  /* display: table-cell; */
+  min-width: 5em;
+  max-width: 10em;
+  width: 100%;
+  text-align:right;
+  padding: 0.3em;
+}
+.field input,
+.field select,
+.field .controls {
+  /* display: table-cell; */
+  width: 15em;
+  min-width: 10em;
+  max-width: 100%;
+  text-align: left;
+}
+
+.error input {
+  /*border: 1px solid red;
+  border-radius: 3px;*/
+  box-shadow: 0 0 0.3rem #aa3333;
+}
+
+.valid input {
+  /*border: 1px solid red;
+  border-radius: 3px;*/
+  box-shadow: 0 0 0.3rem #33aa33;
+}
+
+.errorText {
+  color: #aa0000;
+}
