@@ -4,8 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import app from '../lib/firebase';
 import { authActions } from '../store/auth-slice';
+import SignUp from '../components/session/SignUp';
+import { useState } from 'react';
+import LoginForm from '../components/session/LoginForm';
 
 const Login = () => {
+  const [tab, setTab] = useState('login');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(state => state.auth.user);
@@ -46,9 +50,20 @@ const Login = () => {
 
   return (
     <>
-      <h1>Login</h1>
-      <p>Currently you can only login with google account</p>
-      <button onClick={loginWithGoogle}>Login with google</button>
+      <ul className="tabs">
+        <li><button className={ tab === 'login' ? 'active' : null } onClick={() => setTab('login')}>Login</button></li>
+        <li><button className={ tab === 'signup' ? 'active' : null } onClick={() => setTab('signup')}>Signup</button></li>
+      </ul>
+      { tab === 'login' && <>
+        <h1>Login</h1>
+        <LoginForm />
+        { /*
+        <p>Currently you can only login with google account</p>
+        <button onClick={loginWithGoogle}>Login with google</button>
+        */ }
+        </> 
+      }
+      { tab === 'signup' && <SignUp /> }
     </>
   );
 };
