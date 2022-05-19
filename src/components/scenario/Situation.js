@@ -55,7 +55,7 @@ const Situation = props => {
         setStatus('error');
         console.error(res.error);
     }
-  }
+  };
   const deleteFromServer = async (event) => {
     event.preventDefault();
     setStatus('saving');
@@ -67,7 +67,12 @@ const Situation = props => {
     else {
       setStatus('error');
     }
-  }
+  };
+
+  const makeScenario = () => {
+    // Save as scenario ->
+    // Turn edit mode to scenario =>
+  };
 
   const localSaveHandler = () => {
     const maxId = +(localStorage.getItem('maxScenarioId') || 1);
@@ -128,6 +133,9 @@ const Situation = props => {
       <button type="button" className="btnPrimary" onClick={saveToServer}>Save</button>
       <button type="button" onClick={localSaveHandler}>Save locally</button>
       { id && <button type="button" onClick={deleteFromServer}>Delete</button> }
+    </Field>
+    <Field>
+      <button type="button" className="btnSuccess" onClick={makeScenario}>Create a scenario &rarr;</button>
     </Field>
   </form>);
 };

@@ -24,7 +24,12 @@ button {
   color: white;
   background-color: rgb(11, 71, 184);
 }
-.btnPrimary:hover {
+.btnSuccess {
+  color: white;
+  background-color: rgb(11, 184, 71);
+}
+.btnPrimary:hover,
+.btnSuccess:hover {
   opacity: 0.8;
 }
 
