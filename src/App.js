@@ -10,6 +10,8 @@ import Profile from './pages/Profile';
 import { useSelector } from 'react-redux';
 import Guide from './pages/Guide';
 
+import Toaster from './components/UI/Toaster';
+
 function App() {
   const user = useSelector(state => state.auth.user);
 
@@ -27,6 +29,7 @@ function App() {
           <Route path="*" element={<p>404 Page not found</p>} />
         </Routes>
       </main>
+      <Toaster />
     </>
   );
 }

@@ -7,12 +7,13 @@ import { Provider } from 'react-redux'
 import { authSlice } from '../store/auth-slice';
 import { sheetSlice } from '../store/sheet-slice';
 import { stonesSlice } from '../store/stones-slice';
+import { toasterSlice } from '../store/toaster-slice';
 
 function render(
   ui,
   {
     preloadedState,
-    store = configureStore({ reducer: { auth: authSlice.reducer, sheet: sheetSlice.reducer, stones: stonesSlice.reducer }, preloadedState }),
+    store = configureStore({ reducer: { auth: authSlice.reducer, sheet: sheetSlice.reducer, stones: stonesSlice.reducer, toaster: toasterSlice.reducer }, preloadedState }),
     ...renderOptions
   } = {}
 ) {
