@@ -16,11 +16,17 @@ const Board = () => {
     const sheet  = useSelector(state => state.sheet);
     const dispatch = useDispatch();
     const [tab, setTab] = useState('comment');
-    const [scene, setScene] = useState();
+    const [id, setId] = useState(params.id);
+    const [scene, setScene] = useState({
+        hammer: 'red',
+        weAre: 'red',
+    });
     const [status, setStatus] = useState();
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log('useEffect(BOARD)', params.id);
+        setId(params.id);
         const loadScenario = async (id) => {
             const res = await fetch('http://localhost:3001/scenario/'+id, {mode: 'cors'});
             const scenario = await res.json();
@@ -63,7 +69,7 @@ const Board = () => {
 
     return (<>
         <div className={classes.sheet} style={{marginRight: '2rem'}}>
-            <SheetHistory onInitStones={() => navigate('/board')} />
+            <SheetHistory onInitStones={(newScene) => {setScene(newScene); navigate('/board') }} />
             <Sheet />
         </div>
         <div className={classes.config}>
@@ -73,7 +79,7 @@ const Board = () => {
             </ul>
             { tab === 'conf' && <ConfigureSheet /> }
             { tab === 'comment' && (
-                <Situation init={scene} team1={sheet.team1color} team2={sheet.team2color} />
+                <Situation id={id} init={scene} team1={sheet.team1color} team2={sheet.team2color} />
                 
             )}
             <LocalStorageManager />
