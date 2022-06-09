@@ -17,7 +17,8 @@ export const apiCall = async (
   }
   try {
     let body;
-    if(data instanceof FormData) { 
+    if(data instanceof FormData) {
+      console.log('FormData MODE:', method);
       const convertedFormEntries = Array.from(
         data,
         ([key, value]) => (
@@ -27,8 +28,10 @@ export const apiCall = async (
       body = new URLSearchParams(convertedFormEntries);
     }
     else {
+      console.log('JSON MODE:', method);
       headers["Content-Type"] = "application/json";
       body = JSON.stringify(data);
+      console.log('JSON BODY:', body);
     }
     const response = await fetch("http://localhost:3001" + path, {
       method: method,
