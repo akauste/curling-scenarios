@@ -28,7 +28,7 @@ describe('<StoneSetup />', () => {
     test('should call stonesActions with defaults, when save is clicked', () => {
       const onClose = jest.fn(e => e.preventDefault());
 
-      render(<StoneSetup onClose={onClose} />, {wrapper: Providers});
+      render(<StoneSetup onClose={onClose} onInitStones={() => {}} />, {wrapper: Providers});
       fireEvent.click(screen.getByText('Submit'));
       expect(store.getState()['stones'].direction).toBe(1);
       expect(store.getState()['stones'].hammer).toBe('red');
@@ -39,7 +39,7 @@ describe('<StoneSetup />', () => {
 
     test('should call stonesActions with clicked values, when save is clicked', async () => {
       const onClose = jest.fn(e => e.preventDefault());
-      render(<StoneSetup onClose={onClose} />, {wrapper: Providers});
+      render(<StoneSetup onClose={onClose} onInitStones={() => {}} />, {wrapper: Providers});
 
       fireEvent.click(screen.getByText('Swap'));
       fireEvent.click(screen.getByRole('button', {name: 'yellow'}));
