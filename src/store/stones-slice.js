@@ -4,10 +4,10 @@ const initStones = (direction, mode) => {
   const stones = [];
   const maxStone = mode === 4 ? 8 : 6;
   for(let i=1; i <= maxStone; i++) {
-    stones.push({ x: -direction*(200-i*16), y: direction*(640+32), id:'r'+i, type: 'stone', visible: true, num: i, team: 1 });
+    stones.push({ x: -direction*(200-i*16), y: direction*(640+32), id:'r'+i, type: 'stone', visible: true, num: i, team: 1, played: false });
   }
   for(let i=1; i <= maxStone; i++) {
-    stones.push({ x:  direction*(200-i*16), y: direction*(640+32), id:'y'+i, type: 'stone', visible: true, num: i, team: 2 });
+    stones.push({ x:  direction*(200-i*16), y: direction*(640+32), id:'y'+i, type: 'stone', visible: true, num: i, team: 2, played: false });
   };
   return stones;
 }
@@ -55,6 +55,7 @@ const move = (set, id, x, y) => {
   const stone = set.find(s => s.id === id);
   stone.x = x;
   stone.y = y;
+  stone.played = true;
 };
 
 const presetStones = (stones, hammer, direction, powerPlay, rockPosition) => {
@@ -106,6 +107,7 @@ export const stonesSlice = createSlice({
       const stone = state.stones.find(s => s.id === id);
       stone.x = x;
       stone.y = y;
+      stone.played = true;
       
       // If stone is in corner, move it to outof play position, scaled to small
       if(state.direction === 1) {
@@ -116,6 +118,7 @@ export const stonesSlice = createSlice({
         else if(y > 655) {
           stone.x = stone.team === 1 ? -200+stone.num*16 : 200-stone.num*16;
           stone.y = (640+32);
+          stone.played = false;
         }
         else {
           const overlaps = getOverlaps(stone, state.stones);
@@ -134,6 +137,7 @@ export const stonesSlice = createSlice({
         else if(y < -655) {
           stone.x = stone.team === 1 ? 200-stone.num*16 : -200+stone.num*16;
           stone.y = -(640+32);
+          stone.played = false;
         }
         else {
           const overlaps = getOverlaps(stone, state.stones);
